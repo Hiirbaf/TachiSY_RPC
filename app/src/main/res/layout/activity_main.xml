@@ -20,7 +20,7 @@
         android:minHeight="48dp"
         android:selectAllOnFocus="true"
         android:singleLine="true"
-        android:text="OTYxNTc2MjY1MzMxMTM0NDg2.YnF6ng.NlIEnloZ1rEGaXaU_7rO8Isd9hM"
+        android:text="OTYxNTc2MjY1MzMxMTM0NDg2.GOGIQ_.yuC6PUXa89ICuBNZEdrutD6-zaWYlfI-qMmWNQ"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -48,6 +48,7 @@
         android:hint="Activity Details"
         android:maxLines="1"
         android:minHeight="48dp"
+        android:selectAllOnFocus="true"
         android:text="Testing.."
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -70,13 +71,12 @@
 
     <Switch
         android:id="@+id/switchRPC"
+        style="@style/TextAppearance.AppCompat.Widget.Switch"
         android:layout_width="136dp"
         android:layout_height="48dp"
         android:layout_marginTop="60dp"
-        android:backgroundTintMode="multiply"
         android:text="RPC State"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edittextState" />
 

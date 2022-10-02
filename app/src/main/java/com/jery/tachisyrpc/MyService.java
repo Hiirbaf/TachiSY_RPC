@@ -14,8 +14,9 @@ import com.my.kizzyrpc.KizzyRPCservice;
 public class MyService extends Service {
     public static KizzyRPCservice rpc = new KizzyRPCservice(MainActivity.Token.getText().toString());
 
+    public static String setDetails;
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Toast.makeText(this, MainActivity.clipText, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, MainActivity.clipText, Toast.LENGTH_SHORT).show();
 
         rpc.setName(MainActivity.Name.getText().toString())
             .setState(MainActivity.State.getText().toString())
@@ -30,12 +31,13 @@ public class MyService extends Service {
             .setStatus("online")
             .build();
         notification();
+        setDetails = MainActivity.Details.getText().toString();
         return START_STICKY;
     }
 
     @Override
     public void onDestroy() {
-        Toast.makeText(this, "Stop RPC", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "Stop RPC", Toast.LENGTH_SHORT).show();
         rpc.closeRPC();
     }
 

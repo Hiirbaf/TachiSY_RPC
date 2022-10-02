@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.os.PowerManager;
 import android.provider.Settings;
 import android.service.notification.StatusBarNotification;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     public static ClipData.Item clipItem;
     public static String clipText = "Testing";
 
-    @SuppressLint("MissingInflatedId")
+    @SuppressLint({"MissingInflatedId", "SetTextI18n"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,26 +43,39 @@ public class MainActivity extends AppCompatActivity {
         activity = this;
 
         Token = (Chip) findViewById(R.id.chipToken);
+//        Token.setTooltipText("<--Harry-->#4627");
         Name = (EditText) findViewById(R.id.edittextName);
         State = (EditText) findViewById(R.id.edittextState);
         Details = (EditText) findViewById(R.id.edittextDetails);  // Reference Text : Akatsuki no Yona
         Switch = (Switch) findViewById(R.id.switchRPC);
         Footer = (Chip) findViewById(R.id.chipFooter);
 
-        if (android.os.Build.VERSION.SDK_INT <= 33) {
-            clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-            if (clipboard.hasPrimaryClip())
-                clipItem = clipboard.getPrimaryClip().getItemAt(0);
-            if (clipItem != null) {
-                clipText = clipItem.getText().toString();
-                Details.setText(clipText);
+        Token.setOnClickListener(v -> {
+            if (Token.getText().equals("OTYxNTc2MjY1MzMxMTM0NDg2.GOGIQ_.yuC6PUXa89ICuBNZEdrutD6-zaWYlfI-qMmWNQ")) {
+                Token.setText("OTQ1MTk2MDc5ODQ1MDgxMTIw.YnGHVw.qA_dKCRiQI73mmzD9qUjlPbyJdg");   //jery99961
+                Token.setTooltipText("jery_js#4490");
+            }else {
+                Token.setText("OTYxNTc2MjY1MzMxMTM0NDg2.GOGIQ_.yuC6PUXa89ICuBNZEdrutD6-zaWYlfI-qMmWNQ");   //jery2005may
+                Token.setTooltipText("<--Harry-->#4627");
             }
+        });
+
+        clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        if (clipboard.hasPrimaryClip())
+            clipItem = clipboard.getPrimaryClip().getItemAt(0);
+        if (clipItem != null) {
+            clipText = clipItem.getText().toString();
+            Details.setText(clipText);
         }
 
-        Switch.setChecked(isServiceRunning(MyService.class));
+//        Switch.setChecked(isServiceRunning(MyService.class));
+        if (isServiceRunning(MyService.class)) {
+            Details.setText(MyService.setDetails);
+            Switch.setChecked(true);
+        }
         Switch.setOnClickListener(v -> {
             if (Switch.isChecked()) {
-                Toast.makeText(MainActivity.this, clipText, Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, Details.getText().toString(), Toast.LENGTH_SHORT).show();
                 startService(new Intent(MainActivity.this, MyService.class));
             } else {
                 Toast.makeText(MainActivity.this, "Turning off RPC", Toast.LENGTH_SHORT).show();
@@ -92,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean isServiceRunning(Class<?> serviceClass) {
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        //noinspection deprecation
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
             if (serviceClass.getName().equals(service.service.getClassName())) {
                 return true;
