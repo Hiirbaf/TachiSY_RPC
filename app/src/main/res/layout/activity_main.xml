@@ -1,104 +1,149 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:saveEnabled="true"
     android:scrollbarAlwaysDrawVerticalTrack="true"
-    android:scrollbars="vertical"
+    app:layoutDescription="@xml/activity_main_scene"
     tools:context=".MainActivity"
     tools:ignore="TouchTargetSizeCheck, HardcodedText, AutoFill, TextFields, UseSwitchCompatOrMaterialXml">
 
-    <com.google.android.material.chip.Chip
-        android:id="@+id/chipToken"
-        android:layout_width="0dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:ellipsize="end"
-        android:hint="Account Token"
-        android:minHeight="48dp"
-        android:selectAllOnFocus="true"
-        android:singleLine="true"
-        android:text="OTYxNTc2MjY1MzMxMTM0NDg2.GOGIQ_.yuC6PUXa89ICuBNZEdrutD6-zaWYlfI-qMmWNQ"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/edittextName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:hint="Activity Name"
-        android:maxLines="1"
-        android:minHeight="48dp"
-        android:text="𝐓𝐚𝐜𝐡𝐢𝐲𝐨𝐦𝐢𝐒𝐘"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chipToken" />
-
-    <EditText
-        android:id="@+id/edittextDetails"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:hint="Activity Details"
-        android:maxLines="1"
-        android:minHeight="48dp"
-        android:selectAllOnFocus="true"
-        android:text="Testing.."
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edittextName" />
-
-    <EditText
-        android:id="@+id/edittextState"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:hint="Activity State"
-        android:maxLines="1"
-        android:minHeight="48dp"
-        android:text="𝔐𝔞𝔫𝔤𝔞"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edittextDetails" />
-
-    <Switch
-        android:id="@+id/switchRPC"
-        style="@style/TextAppearance.AppCompat.Widget.Switch"
-        android:layout_width="136dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="60dp"
-        android:text="RPC State"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edittextState" />
-
-    <com.google.android.material.chip.Chip
-        android:id="@+id/chipFooter"
-        android:layout_width="wrap_content"
-        android:layout_height="64dp"
-        android:layout_marginBottom="10dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:minHeight="48dp"
-        android:selectAllOnFocus="true"
-        android:singleLine="true"
-        android:text="Currently in Testing stage --By Jery"
-        android:textAlignment="center"
-        android:textStyle="italic"
-        android:typeface="serif"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/switchRPC"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toTopOf="parent">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chpUsername"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:hint="Account Token"
+            android:maxLines="1"
+            android:minHeight="48dp"
+            android:text="&lt;--Harry#4627--&gt;"
+            app:chipIcon="@drawable/ic_discord"
+            app:closeIcon="@android:drawable/stat_notify_sync"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chpName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Activity Name"
+            android:maxLines="1"
+            android:minHeight="48dp"
+            android:text="𝐓𝐚𝐜𝐡𝐢𝐲𝐨𝐦𝐢𝐒𝐘"
+            app:chipIcon="@drawable/ic_tachiyomi"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/chpUsername" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chpState"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Activity State"
+            android:maxLines="1"
+            android:minHeight="48dp"
+            android:text="𝔐𝔞𝔫𝔤𝔞"
+            app:chipIcon="@drawable/ic_manga_reading"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/chpName"
+            tools:ignore="DuplicateSpeakableTextCheck" />
+
+        <EditText
+            android:id="@+id/edtDetails"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:drawableStart="@android:drawable/ic_menu_send"
+            android:hint="Activity Details"
+            android:maxLines="1"
+            android:minHeight="48dp"
+            android:selectAllOnFocus="true"
+            android:text="Testing"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/chpState" />
+
+        <Switch
+            android:id="@+id/swtRPC"
+            style="@style/Widget.AppCompat.CompoundButton.Switch"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_marginTop="60dp"
+            android:background="@drawable/rounded_corner"
+            android:focusableInTouchMode="true"
+            android:focusedByDefault="true"
+            android:showText="false"
+            android:text="   RPC STATE"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edtDetails" />
+
+        <ToggleButton
+            android:id="@+id/tbManga"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="90dp"
+            android:background="@drawable/tb_rounded_corner_left_on"
+            android:backgroundTint="?attr/colorControlHighlight"
+            android:isScrollContainer="true"
+            android:text="𝔐𝔞𝔫𝔤𝔞"
+            android:textOff="𝔐𝔞𝔫𝔤𝔞"
+            android:textOn="𝔐𝔞𝔫𝔤𝔞"
+            app:layout_constraintBottom_toTopOf="@+id/chipFooter"
+            app:layout_constraintEnd_toStartOf="@+id/tbManhwa"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/swtRPC"
+            app:layout_constraintVertical_bias="0.501" />
+
+        <ToggleButton
+            android:id="@+id/tbManhwa"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="90dp"
+            android:background="@drawable/tb_rounded_corner_right_off"
+            android:backgroundTint="?attr/colorControlHighlight"
+            android:isScrollContainer="true"
+            android:text="𝔐𝔞𝔫𝔥𝔴𝔞"
+            android:textOff="𝔐𝔞𝔫𝔥𝔴𝔞"
+            android:textOn="𝔐𝔞𝔫𝔥𝔴𝔞"
+            app:layout_constraintBaseline_toBaselineOf="@+id/tbManga"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tbManga" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipFooter"
+            android:layout_width="wrap_content"
+            android:layout_height="64dp"
+            android:layout_marginTop="308dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:minHeight="48dp"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:text="Currently in Testing stage --By Jery"
+            android:textAlignment="center"
+            android:textStyle="italic"
+            android:typeface="serif"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/swtRPC" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

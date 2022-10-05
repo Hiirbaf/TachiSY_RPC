@@ -13,5 +13,5 @@ dependencyResolutionManagement {
         maven { url 'https://jitpack.io' }
     }
 }
-rootProject.name = "TachiSY RPC"
+rootProject.name = "TachiSY_RPC"
 include ':app'
