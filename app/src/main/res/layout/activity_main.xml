@@ -7,7 +7,6 @@
     android:layout_height="match_parent"
     android:saveEnabled="true"
     android:scrollbarAlwaysDrawVerticalTrack="true"
-    app:layoutDescription="@xml/activity_main_scene"
     tools:context=".MainActivity"
     tools:ignore="TouchTargetSizeCheck, HardcodedText, AutoFill, TextFields, UseSwitchCompatOrMaterialXml">
 
