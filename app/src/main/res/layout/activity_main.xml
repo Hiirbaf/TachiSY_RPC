@@ -29,6 +29,8 @@
             android:text="&lt;--Harry#4627--&gt;"
             app:chipIcon="@drawable/ic_discord"
             app:closeIcon="@android:drawable/stat_notify_sync"
+            app:closeIconSize="30dp"
+            app:closeIconVisible="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -42,6 +44,9 @@
             android:minHeight="48dp"
             android:text="𝐓𝐚𝐜𝐡𝐢𝐲𝐨𝐦𝐢𝐒𝐘"
             app:chipIcon="@drawable/ic_tachiyomi"
+            app:closeIcon="@android:drawable/stat_notify_sync"
+            app:closeIconSize="30dp"
+            app:closeIconVisible="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/chpUsername" />
@@ -55,6 +60,9 @@
             android:minHeight="48dp"
             android:text="𝔐𝔞𝔫𝔤𝔞"
             app:chipIcon="@drawable/ic_manga_reading"
+            app:closeIcon="@android:drawable/stat_notify_sync"
+            app:closeIconSize="30dp"
+            app:closeIconVisible="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/chpName"
@@ -70,10 +78,10 @@
             android:maxLines="1"
             android:minHeight="48dp"
             android:selectAllOnFocus="true"
-            android:text="Testing"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/chpState" />
+            app:layout_constraintTop_toBottomOf="@+id/chpState"
+            tools:ignore="TextContrastCheck" />
 
         <Switch
             android:id="@+id/swtRPC"
@@ -85,45 +93,12 @@
             android:focusableInTouchMode="true"
             android:focusedByDefault="true"
             android:showText="false"
+            android:splitTrack="true"
             android:text="   RPC STATE"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edtDetails" />
-
-        <ToggleButton
-            android:id="@+id/tbManga"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="90dp"
-            android:background="@drawable/tb_rounded_corner_left_on"
-            android:backgroundTint="?attr/colorControlHighlight"
-            android:isScrollContainer="true"
-            android:text="𝔐𝔞𝔫𝔤𝔞"
-            android:textOff="𝔐𝔞𝔫𝔤𝔞"
-            android:textOn="𝔐𝔞𝔫𝔤𝔞"
-            app:layout_constraintBottom_toTopOf="@+id/chipFooter"
-            app:layout_constraintEnd_toStartOf="@+id/tbManhwa"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/swtRPC"
-            app:layout_constraintVertical_bias="0.501" />
-
-        <ToggleButton
-            android:id="@+id/tbManhwa"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="90dp"
-            android:background="@drawable/tb_rounded_corner_right_off"
-            android:backgroundTint="?attr/colorControlHighlight"
-            android:isScrollContainer="true"
-            android:text="𝔐𝔞𝔫𝔥𝔴𝔞"
-            android:textOff="𝔐𝔞𝔫𝔥𝔴𝔞"
-            android:textOn="𝔐𝔞𝔫𝔥𝔴𝔞"
-            app:layout_constraintBaseline_toBaselineOf="@+id/tbManga"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/tbManga" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chipFooter"
@@ -139,6 +114,16 @@
             android:textAlignment="center"
             android:textStyle="italic"
             android:typeface="serif"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/swtRPC" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            android:text="Button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/swtRPC" />

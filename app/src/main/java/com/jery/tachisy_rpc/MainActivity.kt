@@ -29,8 +29,6 @@ lateinit var name       : Chip
 lateinit var state      : Chip
 lateinit var details    : EditText
 lateinit var switch     : Switch
-lateinit var manga      : ToggleButton
-lateinit var manhwa     : ToggleButton
 lateinit var footer     : Chip
 
 class MainActivity : AppCompatActivity() {
@@ -44,8 +42,6 @@ class MainActivity : AppCompatActivity() {
         state    = findViewById(R.id.chpState)
         details  = findViewById(R.id.edtDetails)
         switch   = findViewById(R.id.swtRPC)
-        manga    = findViewById(R.id.tbManga)
-        manhwa   = findViewById(R.id.tbManhwa)
         footer   = findViewById(R.id.chipFooter)
 
         val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
@@ -63,25 +59,32 @@ class MainActivity : AppCompatActivity() {
             switch.isChecked = true
         }
 
-        username.setOnClickListener {
+        username.setOnCloseIconClickListener {
             if (username.getText().toString() == "<--Harry#4627-->") {
                 username.text = "jery_js#4490"
                 token = BuildConfig.dc_token_jery
-            }else {
+            } else if (username.getText().toString() == "jery_js#4490") {
                 username.text = "<--Harry#4627-->"
-                token = BuildConfig.dc_token_jery
+                token = BuildConfig.dc_token_harry
             }
         }
 
-        manga.setOnClickListener {
-            state.text = "𝔐𝔞𝔫𝔤𝔞"
-            manga.background = ContextCompat.getDrawable(this, R.drawable.tb_rounded_corner_left_on)
-            manhwa.background = ContextCompat.getDrawable(this, R.drawable.tb_rounded_corner_right_off)
+        name.setOnCloseIconClickListener {
+            if (name.getText().toString() == "𝐓𝐚𝐜𝐡𝐢𝐲𝐨𝐦𝐢𝐒𝐘") {
+                name.text = "𝙰𝚗𝚒𝚢𝚘𝚖𝚒"
+                state.text = "𝐀𝐧𝐢𝐦𝐞"
+            }
+            else if (name.getText().toString() == "𝙰𝚗𝚒𝚢𝚘𝚖𝚒") {
+                name.text = "𝐓𝐚𝐜𝐡𝐢𝐲𝐨𝐦𝐢𝐒𝐘"
+                state.text = "𝔐𝔞𝔫𝔤𝔞"
+            }
         }
-        manhwa.setOnClickListener {
-            state.text = "𝔐𝔞𝔫𝔥𝔴𝔞"
-            manhwa.background = ContextCompat.getDrawable(this, R.drawable.tb_rounded_corner_right_on)
-            manga.background = ContextCompat.getDrawable(this, R.drawable.tb_rounded_corner_left_off)
+
+        state.setOnCloseIconClickListener {
+            if (state.getText().toString() == "𝔐𝔞𝔫𝔤𝔞")
+                state.text = "𝔐𝔞𝔫𝔥𝔴𝔞"
+            else if (state.getText().toString() == "𝔐𝔞𝔫𝔥𝔴𝔞")
+                state.text = "𝔐𝔞𝔫𝔤𝔞"
         }
 
         switch.setOnClickListener {
