@@ -13,17 +13,18 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.PowerManager
 import android.provider.Settings
+import android.widget.Button
 import android.widget.EditText
 import android.widget.Switch
 import android.widget.Toast
-import android.widget.ToggleButton
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import com.google.android.material.chip.Chip
 
 var token       : String = BuildConfig.dc_token_harry
-var clipText    : String = "Testing"
-var clipItem    : ClipData.Item? = null
+var largeImage  : String = "attachments/961577469427736636/971135180322529310/unknown.png"
+var smallImage  : String = "attachments/949382602073210921/1001372717783711814/reading-icon.png"
+//var clipText    : String = "Testing"
+//var clipItem    : ClipData.Item? = null
 lateinit var username   : Chip
 lateinit var name       : Chip
 lateinit var state      : Chip
@@ -38,24 +39,27 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         username = findViewById(R.id.chpUsername)
-        name     = findViewById(R.id.chpName)
-        state    = findViewById(R.id.chpState)
-        details  = findViewById(R.id.edtDetails)
-        switch   = findViewById(R.id.swtRPC)
-        footer   = findViewById(R.id.chipFooter)
+        name = findViewById(R.id.chpName)
+        state = findViewById(R.id.chpState)
+        details = findViewById(R.id.edtDetails)
+        switch = findViewById(R.id.swtRPC)
+        footer = findViewById(R.id.chipFooter)
 
-        val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-        if (clipboard.hasPrimaryClip())
-            clipItem = clipboard.getPrimaryClip()?.getItemAt(0)!!
-        @Suppress("SENSELESS_COMPARISON")
-        if (clipItem != null) {
-            clipText = clipItem!!.getText().toString()
-            details.setText(clipText)
-        }
+//        val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+//        if (clipboard.hasPrimaryClip())
+//            clipItem = clipboard.getPrimaryClip()?.getItemAt(0)!!
+//        @Suppress("SENSELESS_COMPARISON")
+//        if (clipItem != null) {
+//            clipText = clipItem!!.getText().toString()
+//            details.setText(clipText)
+//        }
 
         if (isServiceRunning(MyService::class.java)) {
+            username.setText(setUsername)
+            name.setText(setName)
+            state.setText(setState)
             details.setText(setDetails)
-            if(setState == "𝔐𝔞𝔫𝔤𝔞")  state.text="𝔐𝔞𝔫𝔤𝔞" else state.text="𝔐𝔞𝔫𝔥𝔴𝔞"
+            token = setToken.toString()
             switch.isChecked = true
         }
 
@@ -71,12 +75,19 @@ class MainActivity : AppCompatActivity() {
 
         name.setOnCloseIconClickListener {
             if (name.getText().toString() == "𝐓𝐚𝐜𝐡𝐢𝐲𝐨𝐦𝐢𝐒𝐘") {
-                name.text = "𝙰𝚗𝚒𝚢𝚘𝚖𝚒"
-                state.text = "𝐀𝐧𝐢𝐦𝐞"
-            }
-            else if (name.getText().toString() == "𝙰𝚗𝚒𝚢𝚘𝚖𝚒") {
+                name.text = "𝐀𝐧𝐢𝐦𝐞"
+                state.text = "𝙰𝚗𝚒𝚢𝚘𝚖𝚒"
+                name.chipIcon = getDrawable(R.drawable.ic_aniyomi)
+                state.chipIcon = getDrawable(R.drawable.ic_watching)
+                largeImage = "attachments/949382602073210921/1002240570091122798/Aniyomi.png"
+                smallImage = "attachments/949382602073210921/1002240620569567404/watching-icon.png"
+            } else {       // if (name.getText().toString() == "𝐀𝐧𝐢𝐦𝐞" || "𝙰𝚗𝚒𝚢𝚘𝚖𝚒")
                 name.text = "𝐓𝐚𝐜𝐡𝐢𝐲𝐨𝐦𝐢𝐒𝐘"
                 state.text = "𝔐𝔞𝔫𝔤𝔞"
+                name.chipIcon = getDrawable(R.drawable.ic_tachiyomi)
+                state.chipIcon = getDrawable(R.drawable.ic_reading)
+                largeImage = "attachments/961577469427736636/971135180322529310/unknown.png"
+                smallImage = "attachments/949382602073210921/1001372717783711814/reading-icon.png"
             }
         }
 
@@ -85,6 +96,17 @@ class MainActivity : AppCompatActivity() {
                 state.text = "𝔐𝔞𝔫𝔥𝔴𝔞"
             else if (state.getText().toString() == "𝔐𝔞𝔫𝔥𝔴𝔞")
                 state.text = "𝔐𝔞𝔫𝔤𝔞"
+            if (state.getText().toString() == "𝙰𝚗𝚒𝚢𝚘𝚖𝚒") {
+                name.text = "𝙰𝚗𝚒𝚢𝚘𝚖𝚒"
+                state.text = "𝐀𝐧𝐢𝐦𝐞"
+                name.chipIcon = getDrawable(R.drawable.ic_watching)
+                state.chipIcon = getDrawable(R.drawable.ic_aniyomi)
+            } else if (state.getText().toString() == "𝐀𝐧𝐢𝐦𝐞") {
+                name.text = "𝐀𝐧𝐢𝐦𝐞"
+                state.text = "𝙰𝚗𝚒𝚢𝚘𝚖𝚒"
+                name.chipIcon = getDrawable(R.drawable.ic_aniyomi)
+                state.chipIcon = getDrawable(R.drawable.ic_watching)
+            }
         }
 
         switch.setOnClickListener {
@@ -103,10 +125,29 @@ class MainActivity : AppCompatActivity() {
                 intent.data = Uri.parse("package:$packageName")
                 startActivity(intent)
             } else {
-                Toast.makeText(this@MainActivity, "Battery optimization already disabled", Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    this@MainActivity,
+                    "Battery optimization already disabled",
+                    Toast.LENGTH_LONG
+                ).show()
             }
             true
         }
+
+        findViewById<Button>(R.id.button).setOnClickListener{
+            val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+            val clip = ClipData.newPlainText("label", details.text.toString())
+            if (clip != null) {
+                clipboard!!.setPrimaryClip(clip!!)
+            }
+        }
+//        findViewById<Button>(R.id.button2).setOnClickListener{
+//            val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+//            val clip = ClipData.newPlainText("label", details.text.toString())
+//            if (clip != null) {
+//                clipboard!!.setPrimaryClip(clip!!)
+//            }
+//        }
     }
 
     private fun isServiceRunning(serviceClass: Class<*>): Boolean {

@@ -59,7 +59,7 @@
             android:maxLines="1"
             android:minHeight="48dp"
             android:text="𝔐𝔞𝔫𝔤𝔞"
-            app:chipIcon="@drawable/ic_manga_reading"
+            app:chipIcon="@drawable/ic_reading"
             app:closeIcon="@android:drawable/stat_notify_sync"
             app:closeIconSize="30dp"
             app:closeIconVisible="true"
@@ -90,11 +90,14 @@
             android:layout_height="56dp"
             android:layout_marginTop="60dp"
             android:background="@drawable/rounded_corner"
-            android:focusableInTouchMode="true"
-            android:focusedByDefault="true"
-            android:showText="false"
-            android:splitTrack="true"
-            android:text="   RPC STATE"
+            android:paddingHorizontal="25dp"
+            android:saveEnabled="true"
+            android:stateListAnimator="@anim/bounce"
+            android:switchMinWidth="60dp"
+            android:text="RPC STATE"
+            android:textAllCaps="true"
+            android:textSize="16sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -127,6 +130,16 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/swtRPC" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
