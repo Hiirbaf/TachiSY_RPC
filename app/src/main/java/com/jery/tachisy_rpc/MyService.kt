@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.IBinder
 import android.widget.Toast
-import com.my.kizzyrpc.KizzyRPCservice
+import com.jery.tachisy_rpc.rpc.RPCService
 
 // Set up some public variables that will be used between classes and activities
 var setUsername: String? = null
@@ -26,7 +26,7 @@ class MyService : Service() {
 
     private var context: Context? = this
     private var restartService: Boolean? = false
-    private val rpc = KizzyRPCservice(token) //Discord account token
+    private val rpc = RPCService(token) //Discord account token
 
     // When this service is started from another activity
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -69,7 +69,6 @@ class MyService : Service() {
                 .setLargeImage(largeImage)
                 .setSmallImage(smallImage)
                 .setType(type)
-                .setApplicationId("962990036020756480")
                 .setStartTimestamps(System.currentTimeMillis())
 //            .setStopTimestamps(System.currentTimeMillis())
 //            .setButton1("Button1", "https://youtu.be/1yVm_M1sKBE")
