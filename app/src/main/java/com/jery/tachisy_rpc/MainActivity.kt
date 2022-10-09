@@ -6,9 +6,7 @@
 package com.jery.tachisy_rpc
 
 import android.app.ActivityManager
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Intent
+import android.content.*
 import android.net.Uri
 import android.os.Bundle
 import android.os.PowerManager
@@ -18,7 +16,9 @@ import android.widget.EditText
 import android.widget.Switch
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
 import com.google.android.material.chip.Chip
+
 
 var token       : String = BuildConfig.dc_token_harry
 var largeImage  : String = "attachments/961577469427736636/971135180322529310/unknown.png"
@@ -77,15 +77,15 @@ class MainActivity : AppCompatActivity() {
             if (name.getText().toString() == "𝐓𝐚𝐜𝐡𝐢𝐲𝐨𝐦𝐢𝐒𝐘") {
                 name.text = "𝐀𝐧𝐢𝐦𝐞"
                 state.text = "𝙰𝚗𝚒𝚢𝚘𝚖𝚒"
-                name.chipIcon = getDrawable(R.drawable.ic_aniyomi)
-                state.chipIcon = getDrawable(R.drawable.ic_watching)
+                name.chipIcon = AppCompatResources.getDrawable(this, R.drawable.ic_aniyomi)
+                state.chipIcon = AppCompatResources.getDrawable(this, R.drawable.ic_watching)
                 largeImage = "attachments/949382602073210921/1002240570091122798/Aniyomi.png"
                 smallImage = "attachments/949382602073210921/1002240620569567404/watching-icon.png"
             } else {       // if (name.getText().toString() == "𝐀𝐧𝐢𝐦𝐞" || "𝙰𝚗𝚒𝚢𝚘𝚖𝚒")
                 name.text = "𝐓𝐚𝐜𝐡𝐢𝐲𝐨𝐦𝐢𝐒𝐘"
                 state.text = "𝔐𝔞𝔫𝔤𝔞"
-                name.chipIcon = getDrawable(R.drawable.ic_tachiyomi)
-                state.chipIcon = getDrawable(R.drawable.ic_reading)
+                name.chipIcon = AppCompatResources.getDrawable(this, R.drawable.ic_tachiyomi)
+                state.chipIcon = AppCompatResources.getDrawable(this, R.drawable.ic_reading)
                 largeImage = "attachments/961577469427736636/971135180322529310/unknown.png"
                 smallImage = "attachments/949382602073210921/1001372717783711814/reading-icon.png"
             }
@@ -99,13 +99,13 @@ class MainActivity : AppCompatActivity() {
             if (state.getText().toString() == "𝙰𝚗𝚒𝚢𝚘𝚖𝚒") {
                 name.text = "𝙰𝚗𝚒𝚢𝚘𝚖𝚒"
                 state.text = "𝐀𝐧𝐢𝐦𝐞"
-                name.chipIcon = getDrawable(R.drawable.ic_watching)
-                state.chipIcon = getDrawable(R.drawable.ic_aniyomi)
+                name.chipIcon = AppCompatResources.getDrawable(this, R.drawable.ic_watching)
+                state.chipIcon = AppCompatResources.getDrawable(this, R.drawable.ic_aniyomi)
             } else if (state.getText().toString() == "𝐀𝐧𝐢𝐦𝐞") {
                 name.text = "𝐀𝐧𝐢𝐦𝐞"
                 state.text = "𝙰𝚗𝚒𝚢𝚘𝚖𝚒"
-                name.chipIcon = getDrawable(R.drawable.ic_aniyomi)
-                state.chipIcon = getDrawable(R.drawable.ic_watching)
+                name.chipIcon = AppCompatResources.getDrawable(this, R.drawable.ic_aniyomi)
+                state.chipIcon = AppCompatResources.getDrawable(this, R.drawable.ic_watching)
             }
         }
 
@@ -138,6 +138,7 @@ class MainActivity : AppCompatActivity() {
             val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
             val clip = ClipData.newPlainText("label", details.text.toString())
             if (clip != null) {
+                @Suppress("UNNECESSARY_NOT_NULL_ASSERTION")
                 clipboard!!.setPrimaryClip(clip!!)
             }
         }
