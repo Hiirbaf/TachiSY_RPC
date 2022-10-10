@@ -25,16 +25,16 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Build Release apk
-        uses: eskatos/gradle-command-action@v1
-        with:
-          arguments: assembleRelease
-          distributions-cache-enabled: true
-          dependencies-cache-enabled: true
-          configuration-cache-enabled: true
+      #- name: Build Release apk
+      #  uses: eskatos/gradle-command-action@v1
+      #  with:
+      #    arguments: assembleRelease
+      #    distributions-cache-enabled: true
+      #    dependencies-cache-enabled: true
+      #    configuration-cache-enabled: true
 
       - name: Upload apk
         uses: actions/upload-artifact@v2
         with:
           name: apk-release
-          path: app/build/outputs/apk/release/app-release.apk
+          path: app/release/*.apk
