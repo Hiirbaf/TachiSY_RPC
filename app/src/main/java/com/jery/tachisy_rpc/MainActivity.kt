@@ -6,7 +6,10 @@
 package com.jery.tachisy_rpc
 
 import android.app.ActivityManager
-import android.content.*
+import android.app.AlertDialog
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.PowerManager
@@ -20,19 +23,20 @@ import androidx.appcompat.content.res.AppCompatResources
 import com.google.android.material.chip.Chip
 
 
-var token       : String = BuildConfig.dc_token_harry
-var largeImage  : String = "attachments/961577469427736636/971135180322529310/unknown.png"
-var smallImage  : String = "attachments/949382602073210921/1001372717783711814/reading-icon.png"
-//var clipText    : String = "Testing"
-//var clipItem    : ClipData.Item? = null
-lateinit var username   : Chip
-lateinit var name       : Chip
-lateinit var state      : Chip
-lateinit var details    : EditText
-lateinit var switch     : Switch
-lateinit var footer     : Chip
-
 class MainActivity : AppCompatActivity() {
+    companion object {
+        var token       : String = BuildConfig.dc_token_harry
+        var largeImage  : String = "attachments/961577469427736636/971135180322529310/unknown.png"
+        var smallImage  : String = "attachments/949382602073210921/1001372717783711814/reading-icon.png"
+//        var clipText    : String = "Testing"
+//        var clipItem    : ClipData.Item? = null
+
+        lateinit var username   : Chip
+        lateinit var name       : Chip
+        lateinit var state      : Chip
+        lateinit var details    : EditText
+        lateinit var switch     : Switch
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +47,6 @@ class MainActivity : AppCompatActivity() {
         state = findViewById(R.id.chpState)
         details = findViewById(R.id.edtDetails)
         switch = findViewById(R.id.swtRPC)
-        footer = findViewById(R.id.chipFooter)
 
 //        val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
 //        if (clipboard.hasPrimaryClip())
@@ -55,11 +58,11 @@ class MainActivity : AppCompatActivity() {
 //        }
 
         if (isServiceRunning(MyService::class.java)) {
-            username.setText(setUsername)
-            name.setText(setName)
-            state.setText(setState)
-            details.setText(setDetails)
-            token = setToken.toString()
+            username.setText(MyService.setUsername)
+            name.setText(MyService.setName)
+            state.setText(MyService.setState)
+            details.setText(MyService.setDetails)
+            token = MyService.setToken.toString()
             switch.isChecked = true
         }
 
@@ -116,7 +119,7 @@ class MainActivity : AppCompatActivity() {
                 stopService(Intent(this, MyService::class.java))
         }
 
-        footer.setOnLongClickListener {
+        findViewById<Chip>(R.id.chpFooter).setOnLongClickListener {
             val packageName = packageName
             val intent = Intent()
             val pm = getSystemService(POWER_SERVICE) as PowerManager
@@ -149,6 +152,17 @@ class MainActivity : AppCompatActivity() {
 //                clipboard!!.setPrimaryClip(clip!!)
 //            }
 //        }
+        @Suppress("UNUSED_ANONYMOUS_PARAMETER")
+        findViewById<Button>(R.id.button3).setOnClickListener {
+            AlertDialog.Builder(this)
+                .setTitle("Discord Login")
+                .setMessage("Do you really want to login to Discord?")
+                .setIcon(R.drawable.ic_discord)
+                .setPositiveButton("Yes") { dialog, whichButton ->
+                    Toast.makeText(this@MainActivity, "Whoopsies! I havent added the ability to login yet", Toast.LENGTH_SHORT).show()
+                }
+                .setNegativeButton("No", null).show()
+        }
     }
 
     private fun isServiceRunning(serviceClass: Class<*>): Boolean {

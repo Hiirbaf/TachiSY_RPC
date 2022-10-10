@@ -1,5 +1,6 @@
 package com.jery.tachisy_rpc
 
+import android.annotation.SuppressLint
 import android.app.*
 import android.content.Context
 import android.content.Intent
@@ -7,22 +8,31 @@ import android.os.IBinder
 import android.widget.Toast
 import com.jery.tachisy_rpc.rpc.RPCService
 
-// Set up some public variables that will be used between classes and activities
-var setUsername: String? = null
-var setName: String? = null
-var setState: String? = null
-var setDetails: String? = null
-var setToken: String? = null
 
-
+@SuppressLint("UseSwitchCompatOrMaterialCode")
 class MyService : Service() {
+    companion object {
+        // Set up some public variables that will be used between classes and activities
+        var setUsername: String? = null
+        var setName: String? = null
+        var setState: String? = null
+        var setDetails: String? = null
+        var setToken: String? = null
     // Variables that can be referred to from other activities and classes
-    companion object{
         const val ACTION_STOP_SERVICE = "Stop RPC"
         const val ACTION_RESTART_SERVICE = "Restart RPC"
         const val CHANNEL_ID = "Discord RPC"
         const val CHANNEL_NAME = "Discord RPC"
     }
+
+    private var token = MainActivity.token
+    private var username = MainActivity.username
+    private var name = MainActivity.name
+    private var state = MainActivity.state
+    private var details = MainActivity.details
+    private var switch = MainActivity.switch
+    private var largeImage = MainActivity.largeImage
+    private var smallImage = MainActivity.smallImage
 
     private var context: Context? = this
     private var restartService: Boolean? = false

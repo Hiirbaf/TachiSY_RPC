@@ -103,8 +103,42 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edtDetails" />
 
+        <Button
+            android:id="@+id/button"
+            android:layout_width="140dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="96dp"
+            android:background="@drawable/tb_rounded_corner_left_on"
+            android:text="Copy to clipboard"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/swtRPC" />
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="140dp"
+            android:layout_height="60dp"
+            android:background="@drawable/tb_rounded_corner_right_on"
+            android:text="Login to discord"
+            app:layout_constraintBaseline_toBaselineOf="@+id/button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="140dp"
+            android:layout_height="60dp"
+            android:text="Paste from clipboard"
+            android:background="?attr/colorControlHighlight"
+            app:layout_constraintBaseline_toBaselineOf="@+id/button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.516"
+            app:layout_constraintStart_toStartOf="parent" />
+
         <com.google.android.material.chip.Chip
-            android:id="@+id/chipFooter"
+            android:id="@+id/chpFooter"
             android:layout_width="wrap_content"
             android:layout_height="64dp"
             android:layout_marginTop="308dp"
@@ -120,26 +154,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/swtRPC" />
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
-            android:text="Button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/swtRPC" />
-
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
