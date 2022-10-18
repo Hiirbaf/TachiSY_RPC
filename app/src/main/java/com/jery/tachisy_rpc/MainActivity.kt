@@ -25,7 +25,7 @@ import com.google.android.material.chip.Chip
 
 class MainActivity : AppCompatActivity() {
     companion object {
-        var token       : String = BuildConfig.dc_token_harry
+        var token       : String = BuildConfig.dc_token_jery
         var largeImage  : String = "attachments/961577469427736636/971135180322529310/unknown.png"
         var smallImage  : String = "attachments/949382602073210921/1001372717783711814/reading-icon.png"
 //        var clipText    : String = "Testing"
@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        name.setOnCloseIconClickListener {
+        /*name.setOnCloseIconClickListener {
             if (name.getText().toString() == "𝐓𝐚𝐜𝐡𝐢𝐲𝐨𝐦𝐢𝐒𝐘") {
                 name.text = "𝐀𝐧𝐢𝐦𝐞"
                 state.text = "𝙰𝚗𝚒𝚢𝚘𝚖𝚒"
@@ -85,6 +85,23 @@ class MainActivity : AppCompatActivity() {
                 largeImage = "attachments/949382602073210921/1002240570091122798/Aniyomi.png"
                 smallImage = "attachments/949382602073210921/1002240620569567404/watching-icon.png"
             } else {       // if (name.getText().toString() == "𝐀𝐧𝐢𝐦𝐞" || "𝙰𝚗𝚒𝚢𝚘𝚖𝚒")
+                name.text = "𝐓𝐚𝐜𝐡𝐢𝐲𝐨𝐦𝐢𝐒𝐘"
+                state.text = "𝔐𝔞𝔫𝔤𝔞"
+                name.chipIcon = AppCompatResources.getDrawable(this, R.drawable.ic_tachiyomi)
+                state.chipIcon = AppCompatResources.getDrawable(this, R.drawable.ic_reading)
+                largeImage = "attachments/961577469427736636/971135180322529310/unknown.png"
+                smallImage = "attachments/949382602073210921/1001372717783711814/reading-icon.png"
+            }
+        }*/
+        name.setOnCloseIconClickListener {
+            if (name.getText().toString() == "𝐓𝐚𝐜𝐡𝐢𝐲𝐨𝐦𝐢𝐒𝐘") {
+                name.text = "𝐋𝐢𝐠𝐡𝐭 𝐍𝐨𝐯𝐞𝐥"
+                state.text = "𝔐𝔬𝔬𝔫+ ℜ𝔢𝔞𝔡𝔢𝔯"
+                name.chipIcon = AppCompatResources.getDrawable(this, R.drawable.ic_moon_reader)
+                state.chipIcon = AppCompatResources.getDrawable(this, R.drawable.ic_reading_ln)
+                largeImage = "attachments/949382602073210921/1031952390636707930/moon-reader-pro.png"
+                smallImage = "attachments/949382602073210921/994460304626962484/Reading-Icon.png"
+            } else {       // if (name.getText().toString() == "𝐋𝐢𝐠𝐡𝐭 𝐍𝐨𝐯𝐞𝐥" || "𝔐𝔬𝔬𝔫+ ℜ𝔢𝔞𝔡𝔢𝔯")
                 name.text = "𝐓𝐚𝐜𝐡𝐢𝐲𝐨𝐦𝐢𝐒𝐘"
                 state.text = "𝔐𝔞𝔫𝔤𝔞"
                 name.chipIcon = AppCompatResources.getDrawable(this, R.drawable.ic_tachiyomi)
