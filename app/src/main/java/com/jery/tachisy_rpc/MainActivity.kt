@@ -127,6 +127,17 @@ class MainActivity : AppCompatActivity() {
                 name.chipIcon = AppCompatResources.getDrawable(this, R.drawable.ic_aniyomi)
                 state.chipIcon = AppCompatResources.getDrawable(this, R.drawable.ic_watching)
             }
+            if (state.getText().toString() == "𝔐𝔬𝔬𝔫+ ℜ𝔢𝔞𝔡𝔢𝔯") {
+                name.text = "𝔐𝔬𝔬𝔫+ ℜ𝔢𝔞𝔡𝔢𝔯"
+                state.text = "𝐋𝐢𝐠𝐡𝐭 𝐍𝐨𝐯𝐞𝐥"
+                name.chipIcon = AppCompatResources.getDrawable(this, R.drawable.ic_reading_ln)
+                state.chipIcon = AppCompatResources.getDrawable(this, R.drawable.ic_moon_reader)
+            } else if (state.getText().toString() == "𝐋𝐢𝐠𝐡𝐭 𝐍𝐨𝐯𝐞𝐥") {
+                name.text = "𝐋𝐢𝐠𝐡𝐭 𝐍𝐨𝐯𝐞𝐥"
+                state.text = "𝔐𝔬𝔬𝔫+ ℜ𝔢𝔞𝔡𝔢𝔯"
+                name.chipIcon = AppCompatResources.getDrawable(this, R.drawable.ic_moon_reader)
+                state.chipIcon = AppCompatResources.getDrawable(this, R.drawable.ic_reading_ln)
+            }
         }
 
         switch.setOnClickListener {
