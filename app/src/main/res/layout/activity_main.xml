@@ -116,6 +116,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/swtRPC" />
 
+<!--            android:background="?attr/colorControlHighlight"-->
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="140dp"
+                android:layout_height="60dp"
+                android:background="@color/black"
+                android:text="Paste from clipboard"
+                app:layout_constraintBaseline_toBaselineOf="@+id/button"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.516"
+                app:layout_constraintStart_toStartOf="parent" />
+
         <Button
             android:id="@+id/button3"
             android:layout_width="140dp"
@@ -125,17 +137,6 @@
             app:layout_constraintBaseline_toBaselineOf="@+id/button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="140dp"
-            android:layout_height="60dp"
-            android:text="Paste from clipboard"
-            android:background="?attr/colorControlHighlight"
-            app:layout_constraintBaseline_toBaselineOf="@+id/button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.516"
             app:layout_constraintStart_toStartOf="parent" />
 
         <com.google.android.material.chip.Chip

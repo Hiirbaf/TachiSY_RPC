@@ -1,19 +1,18 @@
 @file:Suppress("UseSwitchCompatOrMaterialCode", "UnusedImport", "UNUSED_VARIABLE", "SetTextI18n",
     "UsePropertyAccessSyntax", "SpellCheckingInspection", "StaticFieldLeak",
-    "LiftReturnOrAssignment", "DEPRECATION", "BatteryLife"
+    "LiftReturnOrAssignment", "DEPRECATION", "BatteryLife", "ApplySharedPref"
 )
 
 package com.jery.tachisy_rpc
 
 import android.app.ActivityManager
 import android.app.AlertDialog
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Intent
+import android.content.*
 import android.net.Uri
 import android.os.Bundle
 import android.os.PowerManager
 import android.provider.Settings
+import android.text.Editable
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Switch
@@ -48,6 +47,11 @@ class MainActivity : AppCompatActivity() {
         details = findViewById(R.id.edtDetails)
         switch = findViewById(R.id.swtRPC)
 
+        // From sharedPrefs, restore the name first and then the remaining keys
+        name.setText(getSharedPreferences("lastState", Context.MODE_PRIVATE).getString("keyName","𝐓𝐚𝐜𝐡𝐢𝐲𝐨𝐦𝐢𝐒𝐘"))
+        state.setText(getSharedPreferences("lastState", Context.MODE_PRIVATE).getString("keyState", "𝔐𝔞𝔫𝔤𝔞"))
+        restoreFromLastState()
+
 //        val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
 //        if (clipboard.hasPrimaryClip())
 //            clipItem = clipboard.getPrimaryClip()?.getItemAt(0)!!
@@ -66,6 +70,16 @@ class MainActivity : AppCompatActivity() {
             switch.isChecked = true
         }
 
+        // load the right chipIcon when restoring lastState
+        if (name.text == "𝐓𝐚𝐜𝐡𝐢𝐲𝐨𝐦𝐢𝐒𝐘") {
+            name.chipIcon = AppCompatResources.getDrawable(this, R.drawable.ic_tachiyomi)
+            state.chipIcon = AppCompatResources.getDrawable(this, R.drawable.ic_reading)
+        } else {
+            name.chipIcon = AppCompatResources.getDrawable(this, R.drawable.ic_reading_ln)
+            state.chipIcon = AppCompatResources.getDrawable(this, R.drawable.ic_moon_reader)
+        }
+
+        // toggle between discord accounts
         username.setOnCloseIconClickListener {
             if (username.getText().toString() == "<--Harry#4627-->") {
                 username.text = "jery_js#4490"
@@ -97,10 +111,11 @@ class MainActivity : AppCompatActivity() {
             if (name.getText().toString() == "𝐓𝐚𝐜𝐡𝐢𝐲𝐨𝐦𝐢𝐒𝐘") {
                 name.text = "𝐋𝐢𝐠𝐡𝐭 𝐍𝐨𝐯𝐞𝐥"
                 state.text = "𝔐𝔬𝔬𝔫+ ℜ𝔢𝔞𝔡𝔢𝔯"
-                name.chipIcon = AppCompatResources.getDrawable(this, R.drawable.ic_moon_reader)
-                state.chipIcon = AppCompatResources.getDrawable(this, R.drawable.ic_reading_ln)
+                name.chipIcon = AppCompatResources.getDrawable(this, R.drawable.ic_reading_ln)
+                state.chipIcon = AppCompatResources.getDrawable(this, R.drawable.ic_moon_reader)
                 largeImage = "attachments/949382602073210921/1031952390636707930/moon-reader-pro.png"
                 smallImage = "attachments/949382602073210921/994460304626962484/Reading-Icon.png"
+                restoreFromLastState()
             } else {       // if (name.getText().toString() == "𝐋𝐢𝐠𝐡𝐭 𝐍𝐨𝐯𝐞𝐥" || "𝔐𝔬𝔬𝔫+ ℜ𝔢𝔞𝔡𝔢𝔯")
                 name.text = "𝐓𝐚𝐜𝐡𝐢𝐲𝐨𝐦𝐢𝐒𝐘"
                 state.text = "𝔐𝔞𝔫𝔤𝔞"
@@ -108,9 +123,11 @@ class MainActivity : AppCompatActivity() {
                 state.chipIcon = AppCompatResources.getDrawable(this, R.drawable.ic_reading)
                 largeImage = "attachments/961577469427736636/971135180322529310/unknown.png"
                 smallImage = "attachments/949382602073210921/1001372717783711814/reading-icon.png"
+                restoreFromLastState()
             }
         }
 
+        // inter-switch the name and state chips
         state.setOnCloseIconClickListener {
             if (state.getText().toString() == "𝔐𝔞𝔫𝔤𝔞")
                 state.text = "𝔐𝔞𝔫𝔥𝔴𝔞"
@@ -130,13 +147,13 @@ class MainActivity : AppCompatActivity() {
             if (state.getText().toString() == "𝔐𝔬𝔬𝔫+ ℜ𝔢𝔞𝔡𝔢𝔯") {
                 name.text = "𝔐𝔬𝔬𝔫+ ℜ𝔢𝔞𝔡𝔢𝔯"
                 state.text = "𝐋𝐢𝐠𝐡𝐭 𝐍𝐨𝐯𝐞𝐥"
-                name.chipIcon = AppCompatResources.getDrawable(this, R.drawable.ic_reading_ln)
-                state.chipIcon = AppCompatResources.getDrawable(this, R.drawable.ic_moon_reader)
+                name.chipIcon = AppCompatResources.getDrawable(this, R.drawable.ic_moon_reader)
+                state.chipIcon = AppCompatResources.getDrawable(this, R.drawable.ic_reading_ln)
             } else if (state.getText().toString() == "𝐋𝐢𝐠𝐡𝐭 𝐍𝐨𝐯𝐞𝐥") {
                 name.text = "𝐋𝐢𝐠𝐡𝐭 𝐍𝐨𝐯𝐞𝐥"
                 state.text = "𝔐𝔬𝔬𝔫+ ℜ𝔢𝔞𝔡𝔢𝔯"
-                name.chipIcon = AppCompatResources.getDrawable(this, R.drawable.ic_moon_reader)
-                state.chipIcon = AppCompatResources.getDrawable(this, R.drawable.ic_reading_ln)
+                name.chipIcon = AppCompatResources.getDrawable(this, R.drawable.ic_reading_ln)
+                state.chipIcon = AppCompatResources.getDrawable(this, R.drawable.ic_moon_reader)
             }
         }
 
@@ -145,8 +162,11 @@ class MainActivity : AppCompatActivity() {
                 startService(Intent(this, MyService::class.java))
             else
                 stopService(Intent(this, MyService::class.java))
+
+            saveToLastState()
         }
 
+        // Long press footer to disable battery optimization
         findViewById<Chip>(R.id.chpFooter).setOnLongClickListener {
             val packageName = packageName
             val intent = Intent()
@@ -168,18 +188,15 @@ class MainActivity : AppCompatActivity() {
         findViewById<Button>(R.id.button).setOnClickListener{
             val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
             val clip = ClipData.newPlainText("label", details.text.toString())
-            if (clip != null) {
-                @Suppress("UNNECESSARY_NOT_NULL_ASSERTION")
-                clipboard!!.setPrimaryClip(clip!!)
-            }
+            clipboard.setPrimaryClip(clip!!)
         }
-//        findViewById<Button>(R.id.button2).setOnClickListener{
-//            val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-//            val clip = ClipData.newPlainText("label", details.text.toString())
-//            if (clip != null) {
-//                clipboard!!.setPrimaryClip(clip!!)
-//            }
-//        }
+        findViewById<Button>(R.id.button2).setOnClickListener{
+            val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+            val item = clipboard.primaryClip!!.getItemAt(0)
+            Toast.makeText(this, item.text!!, Toast.LENGTH_SHORT).show()
+            details.setText(item.text!!)
+            restoreFromLastState()
+        }
         @Suppress("UNUSED_ANONYMOUS_PARAMETER")
         findViewById<Button>(R.id.button3).setOnClickListener {
             AlertDialog.Builder(this)
@@ -187,10 +204,32 @@ class MainActivity : AppCompatActivity() {
                 .setMessage("Do you really want to login to Discord?")
                 .setIcon(R.drawable.ic_discord)
                 .setPositiveButton("Yes") { dialog, whichButton ->
-                    Toast.makeText(this@MainActivity, "Whoopsies! I havent added the ability to login yet", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@MainActivity, "Whoopsies! I havent added the ability to login yet", Toast.LENGTH_LONG).show()
                 }
                 .setNegativeButton("No", null).show()
         }
+    }
+
+    private fun restoreFromLastState() {
+        val sharedPreferences : SharedPreferences = getSharedPreferences("lastState", Context.MODE_PRIVATE)
+        // set the saved edtDetails from sharedPrefs
+        if (name.text.toString() == "𝐓𝐚𝐜𝐡𝐢𝐲𝐨𝐦𝐢𝐒𝐘")
+            details.setText(sharedPreferences.getString("keyDetails_tachi", ""))
+        else
+            details.setText(sharedPreferences.getString("keyDetails_ln", ""))
+    }
+
+    private fun saveToLastState() {
+        val sharedPreferences : SharedPreferences = getSharedPreferences("lastState", Context.MODE_PRIVATE)
+        val prefsEditor: SharedPreferences.Editor = sharedPreferences.edit()
+        // extract chpName, chpState and edtDetails to sharedPrefs
+        prefsEditor.putString("keyName", name.text.toString())
+        prefsEditor.putString("keyState", state.text.toString())
+
+        if (name.text.toString() == "𝐓𝐚𝐜𝐡𝐢𝐲𝐨𝐦𝐢𝐒𝐘")
+            prefsEditor.putString("keyDetails_tachi", details.text.toString()).commit()
+        else
+            prefsEditor.putString("keyDetails_ln", details.text.toString()).commit()
     }
 
     private fun isServiceRunning(serviceClass: Class<*>): Boolean {

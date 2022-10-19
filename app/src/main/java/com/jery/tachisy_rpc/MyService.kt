@@ -97,13 +97,13 @@ class MyService : Service() {
             startForeground(
                 99961,
                 Notification.Builder(context, CHANNEL_ID)
-                    .setSmallIcon(R.drawable.ic_launcher_foreground)
+                    .setSmallIcon(R.drawable.ic_rpc_placeholder)
                     .setContentTitle(name.text.toString())
                     .setContentText(details.text.toString())
                     .setSubText(state.text.toString())
                     .setUsesChronometer(true)
-                    .addAction(R.drawable.ic_launcher_foreground, "Exit", pIntentStop)
-                    .addAction(R.drawable.ic_launcher_foreground, "Restart", pIntentRestart)
+                    .addAction(R.drawable.ic_rpc_placeholder, "Exit", pIntentStop)
+                    .addAction(R.drawable.ic_rpc_placeholder, "Restart", pIntentRestart)
                     .build()
             )
 
