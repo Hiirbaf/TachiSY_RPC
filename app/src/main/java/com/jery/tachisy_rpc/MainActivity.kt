@@ -1,6 +1,6 @@
 @file:Suppress("UseSwitchCompatOrMaterialCode", "UnusedImport", "UNUSED_VARIABLE", "SetTextI18n",
     "UsePropertyAccessSyntax", "SpellCheckingInspection", "StaticFieldLeak",
-    "LiftReturnOrAssignment", "DEPRECATION", "BatteryLife", "ApplySharedPref"
+    "LiftReturnOrAssignment", "DEPRECATION", "BatteryLife", "ApplySharedPref", "UNUSED_ANONYMOUS_PARAMETER"
 )
 
 package com.jery.tachisy_rpc
@@ -12,7 +12,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.PowerManager
 import android.provider.Settings
-import android.text.Editable
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Switch
@@ -192,20 +191,17 @@ class MainActivity : AppCompatActivity() {
         }
         findViewById<Button>(R.id.button2).setOnClickListener{
             val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-            val item = clipboard.primaryClip!!.getItemAt(0)
-            Toast.makeText(this, item.text!!, Toast.LENGTH_SHORT).show()
-            details.setText(item.text!!)
+            val clipItem = clipboard.primaryClip!!.getItemAt(0)
+            Toast.makeText(this, clipItem.text!!, Toast.LENGTH_SHORT).show()
+            details.setText(clipItem.text!!)
             restoreFromLastState()
         }
-        @Suppress("UNUSED_ANONYMOUS_PARAMETER")
         findViewById<Button>(R.id.button3).setOnClickListener {
             AlertDialog.Builder(this)
                 .setTitle("Discord Login")
                 .setMessage("Do you really want to login to Discord?")
                 .setIcon(R.drawable.ic_discord)
-                .setPositiveButton("Yes") { dialog, whichButton ->
-                    Toast.makeText(this@MainActivity, "Whoopsies! I havent added the ability to login yet", Toast.LENGTH_LONG).show()
-                }
+                .setPositiveButton("Yes") { dialog, whichButton -> Toast.makeText(this@MainActivity, "Whoopsies! I havent added the ability to login yet", Toast.LENGTH_LONG).show() }
                 .setNegativeButton("No", null).show()
         }
     }
