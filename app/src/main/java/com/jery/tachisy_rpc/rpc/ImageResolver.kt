@@ -1,4 +1,4 @@
-@file:Suppress("DEPRECATION")
+@file:Suppress("DEPRECATION", "UNNECESSARY_NOT_NULL_ASSERTION")
 
 package com.jery.tachisy_rpc.rpc
 

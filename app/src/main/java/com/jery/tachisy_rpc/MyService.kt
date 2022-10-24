@@ -7,6 +7,7 @@ import android.content.Intent
 import android.os.IBinder
 import android.widget.Toast
 import com.jery.tachisy_rpc.rpc.RPCService
+import com.jery.tachisy_rpc.utils.Logic
 
 
 @SuppressLint("UseSwitchCompatOrMaterialCode")
@@ -31,8 +32,6 @@ class MyService : Service() {
     private var state = MainActivity.state
     private var details = MainActivity.details
     private var switch = MainActivity.switch
-    private var largeImage = MainActivity.largeImage
-    private var smallImage = MainActivity.smallImage
 
     private var context: Context? = this
     private var restartService: Boolean? = false
@@ -49,16 +48,8 @@ class MyService : Service() {
         }
         // When the service starts (And no button is pressed in notification (obviously))
         else {
-            Toast.makeText(this, "playing " + name.text.toString(), Toast.LENGTH_SHORT).show()
-            var type = 0
-            if (name.text.toString() == "𝐀𝐧𝐢𝐦𝐞") type = 3
-
             // Create a new channel in notifications
-            val channel = NotificationChannel(
-                CHANNEL_ID,
-                CHANNEL_NAME,
-                NotificationManager.IMPORTANCE_LOW
-            )
+            val channel = NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_LOW)
             channel.description = "Notification displayed when rich presence is active"
             val manager = getSystemService(NotificationManager::class.java)
             manager.createNotificationChannel(channel)
@@ -73,12 +64,14 @@ class MyService : Service() {
             val pIntentRestart: PendingIntent = PendingIntent.getService(this,
                 0,restartIntent,PendingIntent.FLAG_IMMUTABLE)
 
+            Logic.loadRPCData(this)
+
             rpc.setName(name.text.toString())
                 .setState(state.text.toString())
-                .setDetails(details.text.toString())
-                .setLargeImage(largeImage)
-                .setSmallImage(smallImage)
-                .setType(type)
+                .setDetails("「" + details.text.toString() + "」")
+                .setLargeImage(Logic.largeImage)
+                .setSmallImage(Logic.smallImage)
+                .setType(Logic.type)
                 .setStartTimestamps(System.currentTimeMillis())
 //            .setStopTimestamps(System.currentTimeMillis())
 //            .setButton1("Button1", "https://youtu.be/1yVm_M1sKBE")
@@ -103,6 +96,8 @@ class MyService : Service() {
                     .setSubText(state.text.toString())
                     .setUsesChronometer(true)
                     .addAction(R.drawable.ic_rpc_placeholder, "Exit", pIntentStop)
+                    .addAction(R.drawable.ic_rpc_placeholder, "Restart", pIntentRestart)
+                    .addAction(R.drawable.ic_rpc_placeholder, "Restart", pIntentRestart)
                     .addAction(R.drawable.ic_rpc_placeholder, "Restart", pIntentRestart)
                     .build()
             )
