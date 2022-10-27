@@ -99,17 +99,19 @@ class MainActivity : AppCompatActivity() {
 
         // Start or Stop RPC and save details to sharedPrefs on click
         swtSwitch.setOnClickListener {
-            try {
-                if (chpUsername.text.matches(Regex("^(.+)\\.(.+)\\.(.+)$"))) {
-                    if (swtSwitch.isChecked())
-                        startService(Intent(this, MyService::class.java))
-                    else
-                        stopService(Intent(this, MyService::class.java))
-                    saveToLastState()
-                }
-            } catch (e: UninitializedPropertyAccessException) {
-                println(e)
-                Toast.makeText(this, "Enter your discord token first!", Toast.LENGTH_LONG).show()
+            if ((chpUsername.text == "Discord Token") || (chpUsername.text == "")) {
+                Toast.makeText(this, "Enter your discord token first!", Toast.LENGTH_SHORT).show()
+                swtSwitch.isChecked = false
+            }
+            else if (chpUsername.text.matches(Regex("^(.+)\\.(.+)\\.(.+)$")))
+            {
+                if (swtSwitch.isChecked())
+                    startService(Intent(this, MyService::class.java))
+                else
+                    stopService(Intent(this, MyService::class.java))
+                saveToLastState()
+            } else {
+                Toast.makeText(this,"Recheck the entered discord token for typos!" , Toast.LENGTH_SHORT).show()
                 swtSwitch.isChecked = false
             }
         }

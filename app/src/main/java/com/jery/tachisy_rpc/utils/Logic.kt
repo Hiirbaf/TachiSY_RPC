@@ -18,7 +18,6 @@ object Logic {
     private val chpState = MainActivity.chpState
 
     fun nameWasChanged(activity: Activity) {
-        Toast.makeText(activity, "clicked!", Toast.LENGTH_SHORT).show()
         if (chpName.getText().toString() == "𝐓𝐚𝐜𝐡𝐢𝐲𝐨𝐦𝐢𝐒𝐘") {
             chpName.text = "𝐋𝐢𝐠𝐡𝐭 𝐍𝐨𝐯𝐞𝐥"
             chpState.text = "𝔐𝔬𝔬𝔫+ ℜ𝔢𝔞𝔡𝔢𝔯"
@@ -38,6 +37,16 @@ object Logic {
             chpState.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_reading)
         }
         else if (chpName.getText().toString() == "𝐌𝐚𝐧𝐠𝐚𝐠𝐨") {
+            chpName.text = "𝐓𝐚𝐜𝐡𝐢𝐲𝐨𝐦𝐢𝐒𝐘"
+            chpState.text = "𝔐𝔞𝔫𝔤𝔞"
+            chpName.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_tachiyomi)
+            chpState.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_reading)
+        }
+        // This is a workaround for this weird bug I can't fix...
+        // When close app from recent apps and reopened, chpName can't be changed anymore.
+        // I believe it might be cuz the fancy names are not saved in the exact same format in sharedPrefs
+        else {
+            println("Wasn't able to switch template properly!! Switching back to fallback data.")
             chpName.text = "𝐓𝐚𝐜𝐡𝐢𝐲𝐨𝐦𝐢𝐒𝐘"
             chpState.text = "𝔐𝔞𝔫𝔤𝔞"
             chpName.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_tachiyomi)
