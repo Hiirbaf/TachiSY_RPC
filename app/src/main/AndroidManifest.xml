@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="ProtectedPermissions" >
+    tools:ignore="ProtectedPermissions">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -22,11 +22,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TachiSY_RPC"
         tools:targetApi="31">
-        <service
-            android:name=".MyService"
-            android:enabled="true"
-            android:exported="false">
-        </service>
 
         <activity
             android:name=".MainActivity"
@@ -34,15 +29,28 @@
             android:windowSoftInputMode="adjustNothing">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
             <meta-data
                 android:name="android.app.lib_name"
-                android:value="" />
+                android:value="">
+            </meta-data>
         </activity>
 
+        <service
+            android:name=".MyService"
+            android:enabled="true"
+            android:exported="false">
+        </service>
+
+        <activity
+            android:name=".LoginDiscord"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
     </application>
 
 </manifest>
