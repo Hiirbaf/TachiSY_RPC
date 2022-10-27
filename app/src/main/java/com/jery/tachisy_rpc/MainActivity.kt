@@ -137,7 +137,7 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(
                 this@MainActivity,
                 "Battery optimization already disabled",
-                Toast.LENGTH_LONG
+                Toast.LENGTH_SHORT
             ).show()
         }
     }
@@ -226,7 +226,6 @@ class MainActivity : AppCompatActivity() {
     fun pasteDetails(view: View?) {
         val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
         val clipItem = clipboard.primaryClip!!.getItemAt(0)
-        Toast.makeText(this, clipItem.text!!, Toast.LENGTH_SHORT).show()
         edtDetails.setText(clipItem.text!!.toString())
     }
 }
