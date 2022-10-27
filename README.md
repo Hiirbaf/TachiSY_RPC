@@ -35,8 +35,12 @@ An android app built in in 100% Kotlin to set up your discord rich presence *(us
 > Well, I could always just add an option to set the LargeImage  using a img link provided by the user, but I'm trying to find a way to automatically grab the image from the (4) apps, so I dont plan on adding such a feature until requested in an Issue.
 
 
+
 ## Demo
 Here's a short video showcasing the app's UI, it's features and how to use the app.
+
+https://user-images.githubusercontent.com/77010142/198334361-eebe4b62-f9ba-4e20-844b-f708e81a9961.mp4
+
 
 
 ## Download or Build
