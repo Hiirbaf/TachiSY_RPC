@@ -1,7 +1,3 @@
-
-
-
-
 ## TachiSY RPC*
 
 > \**name is subject to change*
@@ -45,7 +41,9 @@ Here's a short video showcasing the app's UI, it's features and how to use the a
 
 ## Download or Build
 You can get the latest apk from the [releases](https://github.com/jeryjs/TachiSY_RPC/releases) page.
+
 Or
+
 You can build the apk using Android Studio.
 - Download this project (or the latest build.zip)
 - Extract it to preferred folder
