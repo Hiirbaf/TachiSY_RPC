@@ -1,162 +1,221 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:saveEnabled="true"
-    android:scrollbarAlwaysDrawVerticalTrack="true"
+    android:fitsSystemWindows="true"
+    android:textSize="15sp"
+    android:orientation="vertical"
     tools:context=".MainActivity"
-    tools:ignore="TouchTargetSizeCheck, HardcodedText, AutoFill, TextFields, UseSwitchCompatOrMaterialXml">
+    tools:ignore="TouchTargetSizeCheck, HardcodedText, AutoFill, TextFields, UseSwitchCompatOrMaterialXml, RtlHardcoded, DuplicateSpeakableTextCheck, RtlSymmetry, UseAppTint, TextContrastCheck, RedundantDescriptionCheck">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
+        android:id="@+id/scrollView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:saveEnabled="true"
+        android:scrollbarAlwaysDrawVerticalTrack="true">
 
-<!--        android:text="&lt;&#45;&#45;Harry#4627&#45;&#45;&gt;"-->
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chpUsername"
-            android:layout_width="0dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:hint="Account Token"
-            android:maxLines="1"
-            android:minHeight="48dp"
-            android:text="jery_js#4490"
-            app:chipIcon="@drawable/ic_discord"
-            app:closeIcon="@android:drawable/stat_notify_sync"
-            app:closeIconSize="30dp"
-            app:closeIconVisible="true"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chpName"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="Activity Name"
-            android:maxLines="1"
-            android:minHeight="48dp"
-            android:text="𝐓𝐚𝐜𝐡𝐢𝐲𝐨𝐦𝐢𝐒𝐘"
-            app:chipIcon="@drawable/ic_tachiyomi"
-            app:closeIcon="@android:drawable/stat_notify_sync"
-            app:closeIconSize="30dp"
-            app:closeIconVisible="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/chpUsername" />
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chpState"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="Activity State"
-            android:maxLines="1"
-            android:minHeight="48dp"
-            android:text="𝔐𝔞𝔫𝔤𝔞"
-            app:chipIcon="@drawable/ic_reading"
-            app:closeIcon="@android:drawable/stat_notify_sync"
-            app:closeIconSize="30dp"
-            app:closeIconVisible="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/chpName"
-            tools:ignore="DuplicateSpeakableTextCheck" />
-
-        <EditText
-            android:id="@+id/edtDetails"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:drawableStart="@android:drawable/ic_menu_send"
-            android:hint="Activity Details"
-            android:maxLines="1"
-            android:minHeight="48dp"
-            android:selectAllOnFocus="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/chpState"
-            tools:ignore="TextContrastCheck" />
-
-        <Switch
-            android:id="@+id/swtRPC"
-            style="@style/Widget.AppCompat.CompoundButton.Switch"
-            android:layout_width="0dp"
-            android:layout_height="56dp"
-            android:layout_marginTop="60dp"
-            android:background="@drawable/rounded_corner"
-            android:paddingHorizontal="25dp"
-            android:saveEnabled="true"
-            android:stateListAnimator="@anim/bounce"
-            android:switchMinWidth="60dp"
-            android:text="RPC STATE"
-            android:textAllCaps="true"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edtDetails" />
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="140dp"
-            android:layout_height="60dp"
-            android:layout_marginTop="96dp"
-            android:background="@drawable/tb_rounded_corner_left_on"
-            android:text="Copy to clipboard"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/swtRPC" />
-
-<!--            android:background="?attr/colorControlHighlight"-->
-            <Button
-                android:id="@+id/button2"
-                android:layout_width="140dp"
-                android:layout_height="60dp"
-                android:background="@color/black"
-                android:text="Paste from clipboard"
-                app:layout_constraintBaseline_toBaselineOf="@+id/button"
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chpUsername"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:hint="Account Token"
+                android:maxLines="1"
+                android:minHeight="48dp"
+                android:text="Discord Token"
+                android:typeface="monospace"
+                app:chipIcon="@drawable/ic_discord"
+                app:closeIcon="@android:drawable/stat_notify_sync"
+                app:closeIconSize="30dp"
+                app:closeIconVisible="true"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.516"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="140dp"
-            android:layout_height="60dp"
-            android:background="@drawable/tb_rounded_corner_right_on"
-            android:text="Login to discord"
-            app:layout_constraintBaseline_toBaselineOf="@+id/button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent" />
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chpName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="Activity Name"
+                android:maxLines="1"
+                android:minHeight="48dp"
+                android:text="𝐓𝐚𝐜𝐡𝐢𝐲𝐨𝐦𝐢𝐒𝐘"
+                app:chipIcon="@drawable/ic_tachiyomi"
+                app:closeIcon="@android:drawable/stat_notify_sync"
+                app:closeIconSize="30dp"
+                app:closeIconVisible="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/chpUsername" />
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chpFooter"
-            android:layout_width="wrap_content"
-            android:layout_height="64dp"
-            android:layout_marginTop="308dp"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:minHeight="48dp"
-            android:selectAllOnFocus="true"
-            android:singleLine="true"
-            android:text="Currently in Testing stage --By Jery"
-            android:textAlignment="center"
-            android:textStyle="italic"
-            android:typeface="serif"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/swtRPC" />
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chpState"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="Activity State"
+                android:maxLines="1"
+                android:minHeight="48dp"
+                android:text="𝔐𝔞𝔫𝔤𝔞"
+                app:chipIcon="@drawable/ic_reading"
+                app:closeIcon="@android:drawable/stat_notify_sync"
+                app:closeIconSize="30dp"
+                app:closeIconVisible="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/chpName" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <LinearLayout
+                android:id="@+id/activityDetails"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/chpState">
 
-</ScrollView>
+                <EditText
+                    android:id="@+id/edtDetails"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@android:drawable/ic_menu_send"
+                    android:hapticFeedbackEnabled="false"
+                    android:hint="Activity Details"
+                    android:maxLines="1"
+                    android:minHeight="48dp"
+                    android:paddingEnd="45dp"
+                    android:selectAllOnFocus="true" />
+
+                <ImageButton
+                    android:id="@+id/imgPasteDetails"
+                    style="?android:buttonBarButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="-45dp"
+                    android:contentDescription="Paste text to edtDetails from clipboard"
+                    android:hapticFeedbackEnabled="true"
+                    android:onClick="pasteDetails"
+                    android:paddingBottom="-15dp"
+                    android:src="?attr/actionModePasteDrawable"
+                    android:tint="?android:attr/textColorHintInverse" />
+            </LinearLayout>
+
+            <Switch
+                android:id="@+id/swtRPC"
+                style="@style/Widget.AppCompat.CompoundButton.Switch"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_marginTop="100dp"
+                android:background="@drawable/rounded_corner"
+                android:hapticFeedbackEnabled="true"
+                android:paddingHorizontal="25dp"
+                android:stateListAnimator="@android:anim/accelerate_decelerate_interpolator"
+                android:switchMinWidth="60dp"
+                android:text="RPC STATE"
+                android:textAllCaps="true"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/activityDetails" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="170dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        app:cardBackgroundColor="?attr/colorControlHighlight"
+        app:cardCornerRadius="20dp"
+        app:cardUseCompatPadding="true"
+        app:contentPaddingBottom="8dp"
+        app:contentPaddingLeft="8dp"
+        app:contentPaddingRight="8dp"
+        app:contentPaddingTop="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layoutDirection="inherit"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/thingsYouCanDo"
+                style="?android:attr/listSeparatorTextViewStyle"
+                android:text="Things you can do"
+                android:textColor="?android:attr/textColorPrimaryNoDisable" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingStart="8dp">
+
+                <TextView
+                    android:id="@+id/ignoreBatteryOptimization"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hapticFeedbackEnabled="true"
+                    android:onClick="ignoreBatteryOptimization"
+                    android:paddingVertical="4dp"
+                    android:text="Ignore battery optimization to prevent app from being killed while in background."
+                    android:textSize="15sp"
+                    android:textStyle="italic"
+                    android:typeface="serif"
+                    app:drawableStartCompat="?android:attr/textCursorDrawable"
+                    tools:ignore="TouchTargetSizeCheck" />
+
+                <TextView
+                    android:id="@+id/appToGetToken"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hapticFeedbackEnabled="true"
+                    android:onClick="launchGetToken"
+                    android:paddingVertical="4dp"
+                    android:text="Get discord token using my token generator app."
+                    android:textSize="15sp"
+                    android:textStyle="italic"
+                    android:typeface="serif"
+                    app:drawableStartCompat="?android:attr/textCursorDrawable"
+                    tools:ignore="TouchTargetSizeCheck" />
+
+                <TextView
+                    android:id="@+id/openGithubRepo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hapticFeedbackEnabled="true"
+                    android:onClick="openGithubRepo"
+                    android:paddingVertical="4dp"
+                    android:text="Show this app's repo on GitHub."
+                    android:textSize="15sp"
+                    android:textStyle="italic"
+                    android:typeface="serif"
+                    app:drawableStartCompat="?android:attr/textCursorDrawable"
+                    tools:ignore="TouchTargetSizeCheck" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

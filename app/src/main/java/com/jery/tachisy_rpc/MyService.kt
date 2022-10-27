@@ -14,24 +14,21 @@ import com.jery.tachisy_rpc.utils.Logic
 class MyService : Service() {
     companion object {
         // Set up some public variables that will be used between classes and activities
-        var setUsername: String? = null
         var setName: String? = null
         var setState: String? = null
         var setDetails: String? = null
-        var setToken: String? = null
-    // Variables that can be referred to from other activities and classes
+        // Variables that can be referred to from other activities and classes
         const val ACTION_STOP_SERVICE = "Stop RPC"
         const val ACTION_RESTART_SERVICE = "Restart RPC"
         const val CHANNEL_ID = "Discord RPC"
         const val CHANNEL_NAME = "Discord RPC"
     }
 
-    private var token = MainActivity.token
-    private var username = MainActivity.username
-    private var name = MainActivity.name
-    private var state = MainActivity.state
-    private var details = MainActivity.details
-    private var switch = MainActivity.switch
+    private var token = MainActivity.chpUsername.text.toString()
+    private var name = MainActivity.chpName
+    private var state = MainActivity.chpState
+    private var details = MainActivity.edtDetails
+    private var switch = MainActivity.swtSwitch
 
     private var context: Context? = this
     private var restartService: Boolean? = false
@@ -80,11 +77,9 @@ class MyService : Service() {
                 .build()
 
             switch.isChecked = true
-            setUsername = username.text.toString()
             setName = name.text.toString()
             setState = state.text.toString()
             setDetails = details.text.toString()
-            setToken = token
 
             @Suppress("DEPRECATION")
             startForeground(
@@ -96,8 +91,6 @@ class MyService : Service() {
                     .setSubText(state.text.toString())
                     .setUsesChronometer(true)
                     .addAction(R.drawable.ic_rpc_placeholder, "Exit", pIntentStop)
-                    .addAction(R.drawable.ic_rpc_placeholder, "Restart", pIntentRestart)
-                    .addAction(R.drawable.ic_rpc_placeholder, "Restart", pIntentRestart)
                     .addAction(R.drawable.ic_rpc_placeholder, "Restart", pIntentRestart)
                     .build()
             )
