@@ -8,6 +8,7 @@ assignees: ''
 ---
 
 ## Enter the details required for your new template
+*`Replace the text within the | | with your required details.`*
 
 **Activity Name** = |TachiyomiSY|
 
@@ -23,5 +24,3 @@ assignees: ''
                
 **Secondary Activity State** to switch between (*like the Manga/Manhwa in TachiyomiSY and Mangago's Templates*)
                =  |Manhwa|
-
-*Replace the text within the | | with your required details.*
