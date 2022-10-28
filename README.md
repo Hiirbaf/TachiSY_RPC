@@ -26,7 +26,7 @@ An android app built in in 100% Kotlin to set up your discord rich presence *(us
 
 ### Will More templates or custom template be added?
 
-> **More Templates—** Sure!! just open a [new issue](https://github.com/jeryjs/TachiSY_RPC/issues/new?title=[New%20Template%20Request]%20%20%7BSpecify%20your%20template%20name%20here%7D&body=Activity%20Name%20%3D%20%7BTachiyomiSY%7D%0D%0AActivity%20State%20%3D%20%7BManga%7D%0D%0A%0D%0A(replace%20text%20in%20%7B%20%7D%20with%20your%20required%20details)) for it and I'll add a new template with your requested app asap!
+> **More Templates—** Sure!! just open a [new issue](https://github.com/jeryjs/TachiSY_RPC/issues/new?assignees=&labels=enhancement&template=new-template-request.md&title=%5BNew+Template+Request%5D+%7CEnter+template+name+here%7C) for it and I'll add a new template with your requested app asap!
 
 > **Custom Template—** No... well at least not for now.
 > There are other android rich presence apps you can use for custom rich presence, but if you really think it would be a good idea to add it, then let me know in a new Issue! (adding custom template is not hard at all.. It's just that I'm too lazy lol!!)
