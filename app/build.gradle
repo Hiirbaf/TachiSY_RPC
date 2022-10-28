@@ -21,9 +21,22 @@ android {
             shrinkResources true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            applicationVariants.all { variant ->
+                variant.outputs.all {
+                    outputFileName = "app-release-v${versionName}.apk"
+                }
+            }
         }
         debug {
             applicationIdSuffix ".debug"
+
+            applicationVariants.all { variant ->
+                variant.outputs.all {
+                    def formattedDate = new Date().format('yyyy-MM-dd-HH-mm-ss')
+                    outputFileName = "app-release-v${versionName}-${formattedDate}.apk"
+                }
+            }
         }
     }
     compileOptions {

@@ -4,16 +4,16 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.jery.tachisy_rpc",
-  "variantName": "release",
+  "applicationId": "com.jery.tachisy_rpc.debug",
+  "variantName": "debug",
   "elements": [
     {
       "type": "SINGLE",
       "filters": [],
       "attributes": [],
       "versionCode": 2,
-      "versionName": "1.1.0-v1.1.0",
-      "outputFile": "app-release.apk"
+      "versionName": "1.1.0-v1.1.0.apk",
+      "outputFile": "app-debug.apk"
     }
   ],
   "elementType": "File"
