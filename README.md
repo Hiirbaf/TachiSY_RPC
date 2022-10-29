@@ -2,13 +2,13 @@
 
 > \**name is subject to change*
 
-An android app built in in 100% Kotlin to set up your discord rich presence *(using the [KizzyRPC](https://github.com/dead8309/KizzyRPC) library)* based on what Manga/Anime/LN you are seeing using the (4) available pre-defined templates!.
+An android app built in in 100% Kotlin to set up your discord rich presence *(using the [KizzyRPC](https://github.com/dead8309/KizzyRPC) library)* based on what Manga/Anime/LN you are seeing using the (5) available pre-defined templates!.
 
 <img src="https://i.ibb.co/zFsmX9H/screen.png" width=220>
 
 > *FYI, this app was made purely for my own needs and to learn to code (this was my first app) but open-sourced it in the end so that it can be of use to those who need it. If you have a thing or two to point out to me related to the code, then feel free to do so.*
 
-### What are the (4) available templates?
+### What are the (5) available templates?
 
 > - [TachiyomiSY](https://github.com/jobobby04/TachiyomiSY)
 >
@@ -21,7 +21,10 @@ An android app built in in 100% Kotlin to set up your discord rich presence *(us
 >    <img src="https://i.ibb.co/5MjR51g/image.png" width=200> <img src="https://i.ibb.co/dsTpryJ/image.png" width=200>
 > - [Mangago](https://www.mangago.me/)
 > 
->    <img src="https://i.ibb.co/PrsR31Q/image.png" width=200> <img src="https://i.ibb.co/PrsR31Q/image.png" width=200>
+>    <img src="https://i.ibb.co/928WLhV/image.png" width=200> <img src="https://i.ibb.co/PrsR31Q/image.png" width=200>
+> - [Webtoon](https://www.webtoons.com/en/)
+> 
+>    <img src="https://i.ibb.co/64Hym54/image.png" width=200>
 
 
 ### Will More templates or custom template be added?
