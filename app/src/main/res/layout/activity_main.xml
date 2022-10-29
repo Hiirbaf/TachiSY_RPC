@@ -8,12 +8,13 @@
     android:textSize="15sp"
     android:orientation="vertical"
     tools:context=".MainActivity"
-    tools:ignore="TouchTargetSizeCheck, HardcodedText, AutoFill, TextFields, UseSwitchCompatOrMaterialXml, RtlHardcoded, DuplicateSpeakableTextCheck, RtlSymmetry, UseAppTint, TextContrastCheck, RedundantDescriptionCheck">
+    tools:ignore="TouchTargetSizeCheck, HardcodedText, AutoFill, TextFields, UseSwitchCompatOrMaterialXml, RtlHardcoded, DuplicateSpeakableTextCheck, RtlSymmetry, UseAppTint, TextContrastCheck, RedundantDescriptionCheck, ImageContrastCheck">
 
     <ScrollView
         android:id="@+id/scrollView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:hapticFeedbackEnabled="false"
         android:saveEnabled="true"
         android:scrollbarAlwaysDrawVerticalTrack="true">
 
@@ -30,6 +31,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
+                android:hapticFeedbackEnabled="true"
                 android:hint="Account Token"
                 android:maxLines="1"
                 android:minHeight="48dp"
@@ -47,6 +49,7 @@
                 android:id="@+id/chpName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:hapticFeedbackEnabled="true"
                 android:hint="Activity Name"
                 android:maxLines="1"
                 android:minHeight="48dp"
@@ -63,6 +66,7 @@
                 android:id="@+id/chpState"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:hapticFeedbackEnabled="true"
                 android:hint="Activity State"
                 android:maxLines="1"
                 android:minHeight="48dp"
@@ -108,7 +112,7 @@
                     android:onClick="pasteDetails"
                     android:paddingBottom="-15dp"
                     android:src="?attr/actionModePasteDrawable"
-                    android:tint="?android:attr/textColorHintInverse" />
+                    android:tint="@android:color/tab_indicator_text" />
             </LinearLayout>
 
             <Switch

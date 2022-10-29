@@ -50,8 +50,8 @@ class MainActivity : AppCompatActivity() {
 
         // From sharedPrefs, restore the Token, name and then remaining keys
         chpUsername.setText(getSharedPreferences("lastState", Context.MODE_PRIVATE).getString("token","Discord Token"))
-        chpName.setText(getSharedPreferences("lastState", Context.MODE_PRIVATE).getString("keyName","𝐓𝐚𝐜𝐡𝐢𝐲𝐨𝐦𝐢𝐒𝐘"))
-        chpState.setText(getSharedPreferences("lastState", Context.MODE_PRIVATE).getString("keyState", "𝔐𝔞𝔫𝔤𝔞"))
+        chpName.setText(getSharedPreferences("lastState", Context.MODE_PRIVATE).getString("keyName",Logic.v_TachiyomiSy))
+        chpState.setText(getSharedPreferences("lastState", Context.MODE_PRIVATE).getString("keyState", Logic.v_Manga))
         restoreFromLastState()
         // load the right chipIcon when restoring lastState
         Logic.restoreCorrectDataOnCreate(this)
@@ -184,7 +184,7 @@ class MainActivity : AppCompatActivity() {
     private fun restoreFromLastState() {
         val sharedPreferences : SharedPreferences = getSharedPreferences("lastState", Context.MODE_PRIVATE)
         // set the saved edtDetails from sharedPrefs
-        if (chpName.text == "𝐓𝐚𝐜𝐡𝐢𝐲𝐨𝐦𝐢𝐒𝐘")
+        if (chpName.text == Logic.v_TachiyomiSy)
             edtDetails.setText(sharedPreferences.getString("keyDetails_tachi", ""))
         else if (chpName.text == "𝐌𝐚𝐧𝐠𝐚𝐠𝐨")
             edtDetails.setText(sharedPreferences.getString("keyDetails_mangago", ""))
@@ -202,7 +202,7 @@ class MainActivity : AppCompatActivity() {
         prefsEditor.putString("keyName", chpName.text.toString())
         prefsEditor.putString("keyState", chpState.text.toString())
 
-        if (chpName.text == "𝐓𝐚𝐜𝐡𝐢𝐲𝐨𝐦𝐢𝐒𝐘")
+        if (chpName.text == Logic.v_TachiyomiSy)
             prefsEditor.putString("keyDetails_tachi", edtDetails.text.toString()).commit()
         else if (chpName.text == "𝐌𝐚𝐧𝐠𝐚𝐠𝐨")
             prefsEditor.putString("keyDetails_mangago", edtDetails.text.toString()).commit()
