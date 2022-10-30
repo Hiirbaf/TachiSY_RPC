@@ -6,13 +6,13 @@
 
 package com.jery.tachisy_rpc
 
+import android.annotation.SuppressLint
 import android.app.ActivityManager
 import android.app.AlertDialog
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.PowerManager
@@ -34,12 +34,18 @@ class MainActivity : AppCompatActivity() {
         lateinit var chpState      : Chip
         lateinit var edtDetails    : EditText
         lateinit var swtSwitch     : Switch
+
+        lateinit var sharedPreferences : SharedPreferences
+        lateinit var prefsEditor: SharedPreferences.Editor
     }
 
+    @SuppressLint("CommitPrefEdits")
     override fun onCreate(savedInstanceState: Bundle?) {
     // Everything below this will be done when the app is opened.
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        sharedPreferences = getSharedPreferences("lastState", Context.MODE_PRIVATE)
+        prefsEditor = sharedPreferences.edit()
 
         // assign the screen components to variables that can be accessed from within other classes and methods.
         chpUsername = findViewById(R.id.chpUsername)
@@ -49,9 +55,9 @@ class MainActivity : AppCompatActivity() {
         swtSwitch = findViewById(R.id.swtRPC)
 
         // From sharedPrefs, restore the Token, name and then remaining keys
-        chpUsername.setText(getSharedPreferences("lastState", Context.MODE_PRIVATE).getString("token","Discord Token"))
-        chpName.setText(getSharedPreferences("lastState", Context.MODE_PRIVATE).getString("keyName",Logic.v_TachiyomiSy))
-        chpState.setText(getSharedPreferences("lastState", Context.MODE_PRIVATE).getString("keyState", Logic.v_Manga))
+        chpUsername.setText(sharedPreferences.getString("token","Discord Token"))
+        chpName.setText(sharedPreferences.getString("keyName",Logic.v_TachiyomiSy))
+        chpState.setText(sharedPreferences.getString("keyState", Logic.v_Manga))
         restoreFromLastState()
         // load the right chipIcon when restoring lastState
         Logic.restoreCorrectDataOnCreate(this)
@@ -67,23 +73,9 @@ class MainActivity : AppCompatActivity() {
 
         // Get user's discord token
         chpUsername.setOnCloseIconClickListener {
-            // Set up the input
-            val input = EditText(this)
-            input.setHint("Paste your discord token here")
-            input.setText(getSharedPreferences("lastState", Context.MODE_PRIVATE).getString("token",null))
-            input.inputType = InputType.TYPE_TEXT_FLAG_MULTI_LINE
-
-            AlertDialog.Builder(this)
-                .setTitle("Discord Token")
-                .setView(input)
-                .setPositiveButton("Save") {dialog, which ->
-                    val inputToken = input.text.toString()
-                    chpUsername.text = inputToken
-                    getSharedPreferences("lastState", Context.MODE_PRIVATE).edit().putString("token", inputToken).commit()
-                }
-                .setNeutralButton("Get Token") {dialog, which -> launchGetToken(it)}
-                .setNegativeButton("Cancel", null)
-                .show()
+            // Start the LoginDiscord activity and return to MainActivity when it calls finish()
+            val intent = Intent(this, LoginDiscord::class.java)
+            startActivityForResult(intent, 1)
         }
 
         // switch between differnet presets
@@ -124,6 +116,13 @@ class MainActivity : AppCompatActivity() {
 //        }
     }
 
+    // Copy text in edtDetails to the clipboard
+    fun pasteDetails(view: View?) {
+        val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+        val clipItem = clipboard.primaryClip!!.getItemAt(0)
+        edtDetails.setText(clipItem.text!!.toString())
+    }
+
     // Long press footer to disable battery optimization
     fun ignoreBatteryOptimization(view: View?) {
         val packageName = packageName
@@ -142,37 +141,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // Check whether getToken app is installed and if not, then download it.
-    // getPackageManager().getLaunchIntentForPackage("com.jery.gettoken")
-    // startActivity( Intent( Intent.ACTION_VIEW,Uri.parse("https://github.com/jeryjs/TachiSY_RPC/raw/main/app/release/getToken.apk") ) )
-    fun launchGetToken(view: View?) {
-//        try {
-            val launchIntent =
-                packageManager.getLaunchIntentForPackage("com.jery.gettoken")
-            if (launchIntent != null) {
-                startActivity(launchIntent)
-            } else {
-                AlertDialog.Builder(this)
-                    .setTitle("Get Discord Token Generator App")
-                    .setMessage("Press 'Continue' to download getDiscordToken.apk.\n\nOnce you have installed this app, you can get your discord token and paste it here.")
-                    .setPositiveButton("Continue") {dialog, which -> startActivity( Intent( Intent.ACTION_VIEW,Uri.parse("https://github.com/jeryjs/TachiSY_RPC/raw/main/app/release/getDiscordToken.apk") ) ) }
-                    .setNegativeButton("Cancel", null)
-                    .show()
-            }
-//            if (getPackageManager().getApplicationInfo("com.jery.gettoken", 0).enabled)
-//                startActivity(getPackageManager().getLaunchIntentForPackage("com.jery.gettoken"))
-//        }
-//        catch (e: PackageManager.NameNotFoundException) {
-//            println(e)
-//            AlertDialog.Builder(this)
-//                .setTitle("Get Discord Token Generator App")
-//                .setMessage("Press 'Continue' to download getDiscordToken.apk.\n\nOnce you have installed this app, you can get your discord token and paste it here.")
-//                .setPositiveButton("Continue") {dialog, which -> startActivity( Intent( Intent.ACTION_VIEW,Uri.parse("https://github.com/jeryjs/TachiSY_RPC/raw/main/app/release/getDiscordToken.apk") ) ) }
-//                .setNegativeButton("Cancel", null)
-//                .show()
-//        }
+    fun resetDiscordToken(view: View) {
+        Toast.makeText(this, "Whoopsies~! I haven't implemented this feature yet, but you can expect it soon!", Toast.LENGTH_LONG).show()
     }
 
+    // open this app's repo on GitHub in browser
     fun openGithubRepo(view: View?) {
          startActivity( Intent(
              Intent.ACTION_VIEW,
@@ -182,7 +155,6 @@ class MainActivity : AppCompatActivity() {
 
     // restore all details from sharedPrefs
     private fun restoreFromLastState() {
-        val sharedPreferences : SharedPreferences = getSharedPreferences("lastState", Context.MODE_PRIVATE)
         // set the saved edtDetails from sharedPrefs
         if (chpName.text == Logic.v_TachiyomiSy)
             edtDetails.setText(sharedPreferences.getString("keyDetails_tachi", ""))
@@ -196,11 +168,9 @@ class MainActivity : AppCompatActivity() {
 
     // save all details to sharedPrefs
     private fun saveToLastState() {
-        val sharedPreferences : SharedPreferences = getSharedPreferences("lastState", Context.MODE_PRIVATE)
-        val prefsEditor: SharedPreferences.Editor = sharedPreferences.edit()
         // extract chpName, chpState and edtDetails to sharedPrefs
-        prefsEditor.putString("keyName", chpName.text.toString())
-        prefsEditor.putString("keyState", chpState.text.toString())
+        prefsEditor.putString("keyName", chpName.text.toString()).commit()
+        prefsEditor.putString("keyState", chpState.text.toString()).commit()
 
         if (chpName.text == Logic.v_TachiyomiSy)
             prefsEditor.putString("keyDetails_tachi", edtDetails.text.toString()).commit()
@@ -208,6 +178,8 @@ class MainActivity : AppCompatActivity() {
             prefsEditor.putString("keyDetails_mangago", edtDetails.text.toString()).commit()
         else if ((chpName.text == "𝐋𝐢𝐠𝐡𝐭 𝐍𝐨𝐯𝐞𝐥") || (chpName.text == "𝔐𝔬𝔬𝔫+ ℜ𝔢𝔞𝔡𝔢𝔯"))
             prefsEditor.putString("keyDetails_ln", edtDetails.text.toString()).commit()
+        else if ((chpName.text == "𝙰𝚗𝚒𝚢𝚘𝚖𝚒") || (chpName.text == "𝐀𝐧𝐢𝐦𝐞"))
+            prefsEditor.putString("keyDetails_anime", edtDetails.text.toString()).commit()
         else if ((chpName.text == "𝙰𝚗𝚒𝚢𝚘𝚖𝚒") || (chpName.text == "𝐀𝐧𝐢𝐦𝐞"))
             prefsEditor.putString("keyDetails_anime", edtDetails.text.toString()).commit()
     }
@@ -220,12 +192,5 @@ class MainActivity : AppCompatActivity() {
                 return true
         }
         return false
-    }
-
-    // Copy text in edtDetails to the clipboard
-    fun pasteDetails(view: View?) {
-        val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-        val clipItem = clipboard.primaryClip!!.getItemAt(0)
-        edtDetails.setText(clipItem.text!!.toString())
     }
 }

@@ -51,4 +51,5 @@ dependencies {
     implementation 'org.java-websocket:Java-WebSocket:1.5.3'
     implementation 'com.blankj:utilcodex:1.31.1'
     implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.10'
+    implementation 'tech.gusavila92:java-android-websocket-client:1.2.2'
 }
