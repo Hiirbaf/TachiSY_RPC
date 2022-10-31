@@ -8,6 +8,7 @@ import android.os.IBinder
 import android.widget.Toast
 import com.jery.tachisy_rpc.rpc.RPCService
 import com.jery.tachisy_rpc.utils.Logic
+import java.lang.reflect.Method
 
 
 @SuppressLint("UseSwitchCompatOrMaterialCode")
@@ -47,6 +48,8 @@ class MyService : Service() {
         if (intent?.action.equals(ACTION_OPEN_APP)) {
             val launchIntent = Intent(this, MainActivity::class.java)
             launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            launchIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            launchIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
             startActivity(launchIntent)
         }
         // If the Restart button is pressed in Notification
