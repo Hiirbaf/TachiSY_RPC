@@ -1,14 +1,13 @@
 @file:Suppress("UseSwitchCompatOrMaterialCode", "UnusedImport", "UNUSED_VARIABLE", "SetTextI18n",
     "UsePropertyAccessSyntax", "SpellCheckingInspection", "StaticFieldLeak",
     "LiftReturnOrAssignment", "DEPRECATION", "BatteryLife", "ApplySharedPref", "UNUSED_ANONYMOUS_PARAMETER",
-    "UNUSED_PARAMETER"
+    "UNUSED_PARAMETER", "CommitPrefEdits", "MissingInflatedId"
 )
 
 package com.jery.tachisy_rpc
 
 import android.annotation.SuppressLint
 import android.app.ActivityManager
-import android.app.AlertDialog
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
@@ -17,12 +16,16 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.PowerManager
 import android.provider.Settings
-import android.text.InputType
 import android.view.View
+import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.NumberPicker
+import android.widget.ScrollView
 import android.widget.Switch
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
 import com.google.android.material.chip.Chip
 import com.jery.tachisy_rpc.utils.Logic
 
@@ -33,13 +36,14 @@ class MainActivity : AppCompatActivity() {
         lateinit var chpName       : Chip
         lateinit var chpState      : Chip
         lateinit var edtDetails    : EditText
+        lateinit var chpType       : TextView
+        lateinit var numChapter    : NumberPicker
         lateinit var swtSwitch     : Switch
 
         lateinit var sharedPreferences : SharedPreferences
         lateinit var prefsEditor: SharedPreferences.Editor
     }
 
-    @SuppressLint("CommitPrefEdits")
     override fun onCreate(savedInstanceState: Bundle?) {
     // Everything below this will be done when the app is opened.
         super.onCreate(savedInstanceState)
@@ -52,13 +56,24 @@ class MainActivity : AppCompatActivity() {
         chpName = findViewById(R.id.chpName)
         chpState = findViewById(R.id.chpState)
         edtDetails = findViewById(R.id.edtDetails)
+        chpType = findViewById(R.id.chpType)
+        numChapter = findViewById(R.id.numChapter)
         swtSwitch = findViewById(R.id.swtRPC)
 
+        val vg = findViewById<ScrollView>(R.id.scrollView1)
+        vg.invalidate()
+        vg.setVisibility(View.GONE)
+        vg.setVisibility(View.VISIBLE)
         // From sharedPrefs, restore the Token, name and then remaining keys
         chpUsername.setText(sharedPreferences.getString("token","Discord Token"))
         chpName.setText(sharedPreferences.getString("keyName",Logic.v_TachiyomiSy))
         chpState.setText(sharedPreferences.getString("keyState", Logic.v_Manga))
-        restoreFromLastState()
+        // set the saved chpType from sharedPrefs
+        chpType.setText(sharedPreferences.getString("keyType", "Vol"))
+        numChapter.value = sharedPreferences.getInt("keyCh", 0)
+        println("keyCh = " + sharedPreferences.getInt("keyCh", 0))
+        // load the correct states
+        Logic.restoreFromLastState()
         // load the right chipIcon when restoring lastState
         Logic.restoreCorrectDataOnCreate(this)
 
@@ -67,6 +82,8 @@ class MainActivity : AppCompatActivity() {
             chpName.setText(MyService.setName)
             chpState.setText(MyService.setState)
             edtDetails.setText(MyService.setDetails)
+            chpType.setText(MyService.setType)
+            numChapter.setValue(MyService.setCh)
             swtSwitch.isChecked = true
         }
 
@@ -81,7 +98,7 @@ class MainActivity : AppCompatActivity() {
         // switch between differnet presets
         chpName.setOnCloseIconClickListener {
             Logic.nameWasChanged(this)
-            restoreFromLastState()
+            Logic.restoreFromLastState()
         }
 
         // inter-switch the name and state chips
@@ -89,19 +106,25 @@ class MainActivity : AppCompatActivity() {
             Logic.stateWasChanged(this)
         }
 
+        // Setup numChapter's min and max and restore last state.
+        val numberPicker = numChapter
+        numberPicker.minValue = 0
+        numberPicker.maxValue = 9999
+        numberPicker.wrapSelectorWheel = false
+        numChapter.value = sharedPreferences.getInt("keyCh", 0)
+
         // Start or Stop RPC and save details to sharedPrefs on click
         swtSwitch.setOnClickListener {
             if ((chpUsername.text == "Discord Token") || (chpUsername.text == "")) {
                 Toast.makeText(this, "Enter your discord token first!", Toast.LENGTH_SHORT).show()
                 swtSwitch.isChecked = false
             }
-            else if (chpUsername.text.matches(Regex("^(.+)\\.(.+)\\.(.+)$")))
+            else if (chpUsername.text.matches(Regex("^.+$")))   // need to change this lol
             {
                 if (swtSwitch.isChecked())
                     startService(Intent(this, MyService::class.java))
                 else
                     stopService(Intent(this, MyService::class.java))
-                saveToLastState()
             } else {
                 Toast.makeText(this,"Recheck the entered discord token for typos!" , Toast.LENGTH_SHORT).show()
                 swtSwitch.isChecked = false
@@ -114,6 +137,16 @@ class MainActivity : AppCompatActivity() {
 //            val clip = ClipData.newPlainText("Activity Details", edtDetails.text.toString())
 //            clipboard.setPrimaryClip(clip!!)
 //        }
+    }
+
+    // Switch between different types on click
+    @Suppress("CascadeIf")
+    fun switchType(view: View?) {
+        if (chpType.text == "Ep") chpType.text = ""
+        else if (chpType.text == "") chpType.text = "Ep"
+        if (chpType.text == "Vol") chpType.text = "Ch"
+        else if (chpType.text == "Ch") chpType.text = ""
+        else if (chpType.text == "") chpType.text = "Vol"
     }
 
     // Copy text in edtDetails to the clipboard
@@ -153,37 +186,6 @@ class MainActivity : AppCompatActivity() {
          ) )
     }
 
-    // restore all details from sharedPrefs
-    private fun restoreFromLastState() {
-        // set the saved edtDetails from sharedPrefs
-        if (chpName.text == Logic.v_TachiyomiSy)
-            edtDetails.setText(sharedPreferences.getString("keyDetails_tachi", ""))
-        else if (chpName.text == "𝐌𝐚𝐧𝐠𝐚𝐠𝐨")
-            edtDetails.setText(sharedPreferences.getString("keyDetails_mangago", ""))
-        else if ((chpName.text == "𝐋𝐢𝐠𝐡𝐭 𝐍𝐨𝐯𝐞𝐥") || (chpName.text == "𝔐𝔬𝔬𝔫+ ℜ𝔢𝔞𝔡𝔢𝔯"))
-            edtDetails.setText(sharedPreferences.getString("keyDetails_ln", ""))
-        else if ((chpName.text == "𝙰𝚗𝚒𝚢𝚘𝚖𝚒") || (chpName.text == "𝐀𝐧𝐢𝐦𝐞"))
-            edtDetails.setText(sharedPreferences.getString("keyDetails_anime", ""))
-    }
-
-    // save all details to sharedPrefs
-    private fun saveToLastState() {
-        // extract chpName, chpState and edtDetails to sharedPrefs
-        prefsEditor.putString("keyName", chpName.text.toString()).commit()
-        prefsEditor.putString("keyState", chpState.text.toString()).commit()
-
-        if (chpName.text == Logic.v_TachiyomiSy)
-            prefsEditor.putString("keyDetails_tachi", edtDetails.text.toString()).commit()
-        else if (chpName.text == "𝐌𝐚𝐧𝐠𝐚𝐠𝐨")
-            prefsEditor.putString("keyDetails_mangago", edtDetails.text.toString()).commit()
-        else if ((chpName.text == "𝐋𝐢𝐠𝐡𝐭 𝐍𝐨𝐯𝐞𝐥") || (chpName.text == "𝔐𝔬𝔬𝔫+ ℜ𝔢𝔞𝔡𝔢𝔯"))
-            prefsEditor.putString("keyDetails_ln", edtDetails.text.toString()).commit()
-        else if ((chpName.text == "𝙰𝚗𝚒𝚢𝚘𝚖𝚒") || (chpName.text == "𝐀𝐧𝐢𝐦𝐞"))
-            prefsEditor.putString("keyDetails_anime", edtDetails.text.toString()).commit()
-        else if ((chpName.text == "𝙰𝚗𝚒𝚢𝚘𝚖𝚒") || (chpName.text == "𝐀𝐧𝐢𝐦𝐞"))
-            prefsEditor.putString("keyDetails_anime", edtDetails.text.toString()).commit()
-    }
-
     // check whether a given service is running or not and return it as a boolean value.
     private fun isServiceRunning(serviceClass: Class<*>): Boolean {
         val manager = getSystemService(ACTIVITY_SERVICE) as ActivityManager
@@ -192,5 +194,18 @@ class MainActivity : AppCompatActivity() {
                 return true
         }
         return false
+    }
+
+    fun fallbackData(view: View) {
+//        println("Either the last template was ${Logic.v_Webtoon} or Wasn't able to switch template properly!!\nSwitching back to fallback data.")
+//        chpName.text = Logic.v_TachiyomiSy
+//        chpState.text = Logic.v_Manga
+//        chpName.chipIcon = AppCompatResources.getDrawable(this, R.drawable.ic_tachiyomi)
+//        chpState.chipIcon = AppCompatResources.getDrawable(this, R.drawable.ic_reading)
+//        chpType.text = "Vol"
+        val vg = findViewById<ScrollView>(R.id.scrollView1)
+        vg.invalidate()
+        vg.setVisibility(View.GONE)
+        vg.setVisibility(View.VISIBLE)
     }
 }
