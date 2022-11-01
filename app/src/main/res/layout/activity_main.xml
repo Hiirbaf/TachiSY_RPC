@@ -5,8 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:textSize="15sp"
+    android:focusable="true"
     android:orientation="vertical"
+    android:textSize="15sp"
     tools:context=".MainActivity"
     tools:ignore="TouchTargetSizeCheck, HardcodedText, AutoFill, TextFields, UseSwitchCompatOrMaterialXml, RtlHardcoded, DuplicateSpeakableTextCheck, RtlSymmetry, UseAppTint, TextContrastCheck, RedundantDescriptionCheck, ImageContrastCheck">
 
@@ -15,8 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hapticFeedbackEnabled="false"
-        android:saveEnabled="true"
-        android:scrollbarAlwaysDrawVerticalTrack="true">
+        android:saveEnabled="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -98,21 +98,38 @@
                     android:hint="Activity Details"
                     android:maxLines="1"
                     android:minHeight="48dp"
-                    android:paddingEnd="45dp"
+                    android:paddingEnd="140dp"
                     android:selectAllOnFocus="true" />
+
+                <TextView
+                    android:id="@+id/chpType"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="-145dp"
+                    android:hapticFeedbackEnabled="true"
+                    android:onClick="switchType"
+                    android:paddingTop="17dp"
+                    android:text="Vol"
+                    android:textAlignment="center" />
+
+                <NumberPicker
+                    android:id="@+id/numChapter"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent" />
 
                 <ImageButton
                     android:id="@+id/imgPasteDetails"
                     style="?android:buttonBarButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="-45dp"
+                    android:layout_marginLeft="05dp"
                     android:contentDescription="Paste text to edtDetails from clipboard"
                     android:hapticFeedbackEnabled="true"
                     android:onClick="pasteDetails"
                     android:paddingBottom="-15dp"
                     android:src="?attr/actionModePasteDrawable"
                     android:tint="@android:color/tab_indicator_text" />
+
             </LinearLayout>
 
             <Switch
@@ -142,12 +159,13 @@
         android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="170dp"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
+        android:minHeight="170dp"
+        android:onClick="fallbackData"
         app:cardBackgroundColor="?attr/colorControlHighlight"
         app:cardCornerRadius="20dp"
         app:cardUseCompatPadding="true"
