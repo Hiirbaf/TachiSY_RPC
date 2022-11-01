@@ -8,7 +8,6 @@ import android.os.IBinder
 import android.widget.Toast
 import com.jery.tachisy_rpc.rpc.RPCService
 import com.jery.tachisy_rpc.utils.Logic
-import java.lang.reflect.Method
 
 
 @SuppressLint("UseSwitchCompatOrMaterialCode")
@@ -18,6 +17,8 @@ class MyService : Service() {
         var setName: String? = null
         var setState: String? = null
         var setDetails: String? = null
+        var setType: String? = null
+        var setCh: Int = 0
         // Variables that can be referred to from other activities and classes
         const val ACTION_STOP_SERVICE = "Stop RPC"
         const val ACTION_RESTART_SERVICE = "Restart RPC"
@@ -29,6 +30,7 @@ class MyService : Service() {
     }
 
     private var token = MainActivity.chpUsername.text.toString()
+    private var type = 0
 
     private var context: Context? = this
     private var restartService: Boolean? = false
@@ -45,7 +47,7 @@ class MyService : Service() {
         // If the Exit button is pressed in Notification
         if (intent?.action.equals(ACTION_STOP_SERVICE)) stopSelf()
         // If the Open button is pressed in Notification
-        if (intent?.action.equals(ACTION_OPEN_APP)) {
+        else if (intent?.action.equals(ACTION_OPEN_APP)) {
             val launchIntent = Intent(this, MainActivity::class.java)
             launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             launchIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
@@ -58,17 +60,57 @@ class MyService : Service() {
             stopSelf()
         }
         else if (intent?.action.equals(ACTION_SUB_ONE)) {
-            MainActivity.edtDetails.setText("Subtracted One")
+            MainActivity.numChapter.value = MainActivity.numChapter.value - 1
+            println("new chapter number = ${MainActivity.numChapter.value}")
+            Logic.saveToLastState()
             restartService = true
             stopSelf()
         }
         else if (intent?.action.equals(ACTION_ADD_ONE)) {
-            MainActivity.edtDetails.setText("Added One")
+            MainActivity.numChapter.value = MainActivity.numChapter.value + 1
+            println("new chapter number = ${MainActivity.numChapter.value}")
+            Logic.saveToLastState()
             restartService = true
             stopSelf()
         }
         // When the service starts (And no button is pressed in notification (obviously))
         else {
+            Logic.loadRPCData(this)
+            Logic.saveToLastState()
+
+            val chapterType = " ${MainActivity.chpType.text} "
+            var chapterNumber = MainActivity.numChapter.value.toString()
+            if (MainActivity.chpType.text == "") chapterNumber = ""
+
+            if (MainActivity.chpName.text == Logic.v_Anime) {
+                type = 3
+                Toast.makeText(this, "watching " + MainActivity.chpName.text.toString() + "\n" + MainActivity.chpState.text + ":「" + MainActivity.edtDetails.text + chapterType + chapterNumber + "」", Toast.LENGTH_SHORT).show()
+            }else {
+                type = 0
+                Toast.makeText(this, "playing " + MainActivity.chpName.text.toString() + "\n" + MainActivity.chpState.text + ":「" + MainActivity.edtDetails.text + chapterType + chapterNumber + "」", Toast.LENGTH_SHORT).show()
+            }
+
+            rpc.setName(MainActivity.chpName.text.toString())
+                .setState(MainActivity.chpState.text.toString())
+                .setDetails("「" + MainActivity.edtDetails.text.trim() + chapterType + chapterNumber + "」")
+                .setLargeImage(Logic.largeImage)
+                .setSmallImage(Logic.smallImage)
+                .setType(type)
+                .setStartTimestamps(System.currentTimeMillis())
+//            .setStopTimestamps(System.currentTimeMillis())
+//            .setButton1("Button1", "https://youtu.be/1yVm_M1sKBE")
+//            .setButton2("Button2", "https://youtu.be/1yVm_M1sKBE")
+                .setStatus("online")
+                .build()
+
+            // Save the variables to active memory so that they can be called by MainActivity's onCreate()
+            MainActivity.swtSwitch.isChecked = true
+            setName = MainActivity.chpName.text.toString()
+            setState = MainActivity.chpState.text.toString()
+            setDetails = MainActivity.edtDetails.text.toString()
+            setType = MainActivity.chpType.text.toString()
+            setCh = MainActivity.numChapter.value
+
             // Create a new channel in notifications
             val channel = NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_LOW)
             channel.description = "Notification displayed when rich presence is active"
@@ -86,46 +128,28 @@ class MyService : Service() {
             val addIntent = Intent(this, MyService::class.java)
             addIntent.action = ACTION_ADD_ONE
 
-            if (MainActivity.edtDetails.text.matches(Regex("^.+(Vol)|(Ch)|(Ep)\\.?\\s?\\d{1,4}\\s*$"))) {
+            if (MainActivity.chpType.text != "") {
+                println("Incremental details detected!")
                 notiBtnOneIntent = subIntent
                 notiBtnTwoIntent = addIntent
                 notiBtnOneText = "-1"
                 notiBtnTwoText = "+1"
             } else {
+                println("Non-Incremental details detected!")
                 notiBtnOneIntent = openIntent
                 notiBtnTwoIntent = restartIntent
                 notiBtnOneText = "Open"
                 notiBtnTwoText = "Restart"
             }
 
-            Logic.loadRPCData(this)
-
-            rpc.setName(MainActivity.chpName.text.toString())
-                .setState(MainActivity.chpState.text.toString())
-                .setDetails("「" + MainActivity.edtDetails.text.toString() + "」")
-                .setLargeImage(Logic.largeImage)
-                .setSmallImage(Logic.smallImage)
-                .setType(Logic.type)
-                .setStartTimestamps(System.currentTimeMillis())
-//            .setStopTimestamps(System.currentTimeMillis())
-//            .setButton1("Button1", "https://youtu.be/1yVm_M1sKBE")
-//            .setButton2("Button2", "https://youtu.be/1yVm_M1sKBE")
-                .setStatus("online")
-                .build()
-
-            MainActivity.swtSwitch.isChecked = true
-            setName = MainActivity.chpName.text.toString()
-            setState = MainActivity.chpState.text.toString()
-            setDetails = MainActivity.edtDetails.text.toString()
-
             @Suppress("DEPRECATION")
             startForeground(
                 99961,
                 Notification.Builder(context, CHANNEL_ID)
                     .setSmallIcon(R.drawable.ic_rpc_placeholder)
-                    .setContentTitle(MainActivity.chpName.text.toString())
-                    .setContentText(MainActivity.edtDetails.text.toString())
-                    .setSubText(MainActivity.chpState.text.toString())
+                    .setContentTitle(MainActivity.chpName.text)
+                    .setContentText("「" + MainActivity.edtDetails.text.trim() + chapterType + chapterNumber + "」")
+                    .setSubText(MainActivity.chpState.text)
                     .setUsesChronometer(true)
                     .addAction(R.drawable.ic_rpc_placeholder, "Exit", PendingIntent.getService(this, 0, stopIntent, PendingIntent.FLAG_IMMUTABLE))
                     .addAction(R.drawable.ic_rpc_placeholder, notiBtnOneText, PendingIntent.getService(this, 0, notiBtnOneIntent,PendingIntent.FLAG_IMMUTABLE))
