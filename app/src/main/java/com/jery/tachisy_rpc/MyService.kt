@@ -17,7 +17,7 @@ class MyService : Service() {
         var setName: String? = null
         var setState: String? = null
         var setDetails: String? = null
-        var setType: String? = null
+        var setType: Int = 0
         var setCh: Int = 0
         // Variables that can be referred to from other activities and classes
         const val ACTION_STOP_SERVICE = "Stop RPC"
@@ -31,6 +31,7 @@ class MyService : Service() {
 
     private var token = MainActivity.chpUsername.text.toString()
     private var type = 0
+    private var chType = MainActivity.arrayOfTypes[MainActivity.numType.value]
 
     private var context: Context? = this
     private var restartService: Boolean? = false
@@ -78,9 +79,9 @@ class MyService : Service() {
             Logic.loadRPCData(this)
             Logic.saveToLastState()
 
-            val chapterType = " ${MainActivity.chpType.text} "
+            var chapterType = " $chType "
             var chapterNumber = MainActivity.numChapter.value.toString()
-            if (MainActivity.chpType.text == "") chapterNumber = ""
+            if (chType == "") { chapterType = ""; chapterNumber = "" }
 
             if (MainActivity.chpName.text == Logic.v_Anime) {
                 type = 3
@@ -89,17 +90,15 @@ class MyService : Service() {
                 type = 0
                 Toast.makeText(this, "playing " + MainActivity.chpName.text.toString() + "\n" + MainActivity.chpState.text + ":「" + MainActivity.edtDetails.text + chapterType + chapterNumber + "」", Toast.LENGTH_SHORT).show()
             }
+            val activityDetails = "${MainActivity.edtDetails.text.trim()}$chapterType$chapterNumber"
 
             rpc.setName(MainActivity.chpName.text.toString())
                 .setState(MainActivity.chpState.text.toString())
-                .setDetails("「" + MainActivity.edtDetails.text.trim() + chapterType + chapterNumber + "」")
+                .setDetails("「$activityDetails」")
                 .setLargeImage(Logic.largeImage)
                 .setSmallImage(Logic.smallImage)
                 .setType(type)
                 .setStartTimestamps(System.currentTimeMillis())
-//            .setStopTimestamps(System.currentTimeMillis())
-//            .setButton1("Button1", "https://youtu.be/1yVm_M1sKBE")
-//            .setButton2("Button2", "https://youtu.be/1yVm_M1sKBE")
                 .setStatus("online")
                 .build()
 
@@ -108,7 +107,7 @@ class MyService : Service() {
             setName = MainActivity.chpName.text.toString()
             setState = MainActivity.chpState.text.toString()
             setDetails = MainActivity.edtDetails.text.toString()
-            setType = MainActivity.chpType.text.toString()
+            setType = MainActivity.numType.value
             setCh = MainActivity.numChapter.value
 
             // Create a new channel in notifications
@@ -128,7 +127,7 @@ class MyService : Service() {
             val addIntent = Intent(this, MyService::class.java)
             addIntent.action = ACTION_ADD_ONE
 
-            if (MainActivity.chpType.text != "") {
+            if (activityDetails.matches(Regex("^.+\\s((Vol)|(Ch)|(Ep))\\s\\d{1,4}\\s*$"))) {
                 println("Incremental details detected!")
                 notiBtnOneIntent = subIntent
                 notiBtnTwoIntent = addIntent
@@ -148,7 +147,7 @@ class MyService : Service() {
                 Notification.Builder(context, CHANNEL_ID)
                     .setSmallIcon(R.drawable.ic_rpc_placeholder)
                     .setContentTitle(MainActivity.chpName.text)
-                    .setContentText("「" + MainActivity.edtDetails.text.trim() + chapterType + chapterNumber + "」")
+                    .setContentText("「$activityDetails」")
                     .setSubText(MainActivity.chpState.text)
                     .setUsesChronometer(true)
                     .addAction(R.drawable.ic_rpc_placeholder, "Exit", PendingIntent.getService(this, 0, stopIntent, PendingIntent.FLAG_IMMUTABLE))
