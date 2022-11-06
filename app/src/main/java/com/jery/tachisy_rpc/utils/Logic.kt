@@ -28,7 +28,7 @@ object Logic {
     lateinit var smallImage: String
     private val chpName = MainActivity.chpName
     private val chpState = MainActivity.chpState
-    private val chpType = MainActivity.chpType
+    private val numType = MainActivity.numType
 
     fun nameWasChanged(activity: Activity) {
         if (chpName.getText().toString() == v_TachiyomiSy) {
@@ -36,35 +36,35 @@ object Logic {
             chpState.text = v_MoonReader
             chpName.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_reading_ln)
             chpState.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_moon_reader)
-            chpType.text = "Vol"
+            numType.value = 0
         }
         else if ((chpName.getText().toString() == v_LightNovel) || (chpName.getText().toString() == v_MoonReader)) {
             chpName.text = v_Aniyomi
             chpState.text = v_Anime
             chpName.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_aniyomi)
             chpState.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_watching)
-            chpType.text = "Ep"
+            numType.value = 2
         }
         else if ((chpName.getText().toString() == v_Aniyomi) || (chpName.getText().toString() == v_Anime)) {
             chpName.text = v_Mangago
             chpState.text = v_Manga
             chpName.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_mangago)
             chpState.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_reading)
-            chpType.text = "Vol"
+            numType.value = 0
         }
         else if (chpName.getText().toString() == v_Mangago) {
             chpName.text = v_Webtoon
             chpState.text = v_Reading
             chpName.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_webtoon)
             chpState.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_reading)
-            chpType.text = "Ep"
+            numType.value = 2
         }
         else if (chpName.getText().toString() == v_Webtoon) {
             chpName.text = v_TachiyomiSy
             chpState.text = v_Manga
             chpName.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_tachiyomi)
             chpState.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_reading)
-            chpType.text = "Vol"
+            numType.value = 0
         }
         // This is a workaround for this weird bug I can't fix...
         // When close app from recent apps and reopened, chpName can't be changed anymore.
@@ -75,7 +75,7 @@ object Logic {
             chpState.text = v_Manga
             chpName.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_tachiyomi)
             chpState.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_reading)
-            chpType.text = "Vol"
+            numType.value = 0
         }
     }
 
@@ -165,7 +165,7 @@ object Logic {
         else if (MainActivity.chpName.text == v_Webtoon)
             MainActivity.prefsEditor.putString("keyDetails_webtoon", MainActivity.edtDetails.text.toString()).commit()
         // save the current type and ch to sharedPrefs
-        MainActivity.prefsEditor.putString("keyType", MainActivity.chpType.text.toString()).commit()
+        MainActivity.prefsEditor.putInt("keyType", MainActivity.numType.getValue()).commit()
         MainActivity.prefsEditor.putInt("keyCh", MainActivity.numChapter.getValue()).commit()
     }
 

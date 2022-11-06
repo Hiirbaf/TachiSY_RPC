@@ -6,7 +6,6 @@
 
 package com.jery.tachisy_rpc
 
-import android.annotation.SuppressLint
 import android.app.ActivityManager
 import android.content.ClipboardManager
 import android.content.Context
@@ -17,15 +16,8 @@ import android.os.Bundle
 import android.os.PowerManager
 import android.provider.Settings
 import android.view.View
-import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.NumberPicker
-import android.widget.ScrollView
-import android.widget.Switch
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.content.res.AppCompatResources
 import com.google.android.material.chip.Chip
 import com.jery.tachisy_rpc.utils.Logic
 
@@ -36,9 +28,10 @@ class MainActivity : AppCompatActivity() {
         lateinit var chpName       : Chip
         lateinit var chpState      : Chip
         lateinit var edtDetails    : EditText
-        lateinit var chpType       : TextView
+        lateinit var numType       : NumberPicker
         lateinit var numChapter    : NumberPicker
         lateinit var swtSwitch     : Switch
+        var arrayOfTypes = arrayOf("Vol", "Ch", "Ep", "")
 
         lateinit var sharedPreferences : SharedPreferences
         lateinit var prefsEditor: SharedPreferences.Editor
@@ -56,22 +49,16 @@ class MainActivity : AppCompatActivity() {
         chpName = findViewById(R.id.chpName)
         chpState = findViewById(R.id.chpState)
         edtDetails = findViewById(R.id.edtDetails)
-        chpType = findViewById(R.id.chpType)
+        numType = findViewById(R.id.numType)
         numChapter = findViewById(R.id.numChapter)
         swtSwitch = findViewById(R.id.swtRPC)
 
-        val vg = findViewById<ScrollView>(R.id.scrollView1)
-        vg.invalidate()
-        vg.setVisibility(View.GONE)
-        vg.setVisibility(View.VISIBLE)
         // From sharedPrefs, restore the Token, name and then remaining keys
         chpUsername.setText(sharedPreferences.getString("token","Discord Token"))
         chpName.setText(sharedPreferences.getString("keyName",Logic.v_TachiyomiSy))
         chpState.setText(sharedPreferences.getString("keyState", Logic.v_Manga))
         // set the saved chpType from sharedPrefs
-        chpType.setText(sharedPreferences.getString("keyType", "Vol"))
         numChapter.value = sharedPreferences.getInt("keyCh", 0)
-        println("keyCh = " + sharedPreferences.getInt("keyCh", 0))
         // load the correct states
         Logic.restoreFromLastState()
         // load the right chipIcon when restoring lastState
@@ -82,7 +69,7 @@ class MainActivity : AppCompatActivity() {
             chpName.setText(MyService.setName)
             chpState.setText(MyService.setState)
             edtDetails.setText(MyService.setDetails)
-            chpType.setText(MyService.setType)
+            numType.setValue(MyService.setType)
             numChapter.setValue(MyService.setCh)
             swtSwitch.isChecked = true
         }
@@ -106,11 +93,18 @@ class MainActivity : AppCompatActivity() {
             Logic.stateWasChanged(this)
         }
 
+        // Setup numType's options and restore last state
+        numType.minValue = 0
+        numType.maxValue = arrayOfTypes.size -1
+        numType.wrapSelectorWheel = false
+        numType.displayedValues = arrayOfTypes
+        numType.setOnValueChangedListener { numType, oldVal, newVal -> var chType = arrayOfTypes[numType.value] }
+        numType.value = sharedPreferences.getInt("keyType", 0)
+
         // Setup numChapter's min and max and restore last state.
-        val numberPicker = numChapter
-        numberPicker.minValue = 0
-        numberPicker.maxValue = 9999
-        numberPicker.wrapSelectorWheel = false
+        numChapter.minValue = 0
+        numChapter.maxValue = 9999
+        numChapter.wrapSelectorWheel = false
         numChapter.value = sharedPreferences.getInt("keyCh", 0)
 
         // Start or Stop RPC and save details to sharedPrefs on click
@@ -137,16 +131,6 @@ class MainActivity : AppCompatActivity() {
 //            val clip = ClipData.newPlainText("Activity Details", edtDetails.text.toString())
 //            clipboard.setPrimaryClip(clip!!)
 //        }
-    }
-
-    // Switch between different types on click
-    @Suppress("CascadeIf")
-    fun switchType(view: View?) {
-        if (chpType.text == "Ep") chpType.text = ""
-        else if (chpType.text == "") chpType.text = "Ep"
-        if (chpType.text == "Vol") chpType.text = "Ch"
-        else if (chpType.text == "Ch") chpType.text = ""
-        else if (chpType.text == "") chpType.text = "Vol"
     }
 
     // Copy text in edtDetails to the clipboard
@@ -194,18 +178,5 @@ class MainActivity : AppCompatActivity() {
                 return true
         }
         return false
-    }
-
-    fun fallbackData(view: View) {
-//        println("Either the last template was ${Logic.v_Webtoon} or Wasn't able to switch template properly!!\nSwitching back to fallback data.")
-//        chpName.text = Logic.v_TachiyomiSy
-//        chpState.text = Logic.v_Manga
-//        chpName.chipIcon = AppCompatResources.getDrawable(this, R.drawable.ic_tachiyomi)
-//        chpState.chipIcon = AppCompatResources.getDrawable(this, R.drawable.ic_reading)
-//        chpType.text = "Vol"
-        val vg = findViewById<ScrollView>(R.id.scrollView1)
-        vg.invalidate()
-        vg.setVisibility(View.GONE)
-        vg.setVisibility(View.VISIBLE)
     }
 }
