@@ -7,6 +7,7 @@
 package com.jery.tachisy_rpc
 
 import android.app.ActivityManager
+import android.app.AlertDialog
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
@@ -20,10 +21,13 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.chip.Chip
 import com.jery.tachisy_rpc.utils.Logic
+import com.blankj.utilcode.util.FileUtils.delete
+import java.io.File
 
 
 class MainActivity : AppCompatActivity() {
     companion object {
+        lateinit var Token         : String
         lateinit var chpUsername   : Chip
         lateinit var chpName       : Chip
         lateinit var chpState      : Chip
@@ -31,10 +35,10 @@ class MainActivity : AppCompatActivity() {
         lateinit var numType       : NumberPicker
         lateinit var numChapter    : NumberPicker
         lateinit var swtSwitch     : Switch
-        var arrayOfTypes = arrayOf("Vol", "Ch", "Ep", "")
 
         lateinit var sharedPreferences : SharedPreferences
         lateinit var prefsEditor: SharedPreferences.Editor
+        var arrayOfTypes = arrayOf("Vol", "Ch", "Ep", "")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,7 +58,7 @@ class MainActivity : AppCompatActivity() {
         swtSwitch = findViewById(R.id.swtRPC)
 
         // From sharedPrefs, restore the Token, name and then remaining keys
-        chpUsername.setText(sharedPreferences.getString("token","Discord Token"))
+        Token = sharedPreferences.getString("token","Discord Token").toString()
         chpName.setText(sharedPreferences.getString("keyName",Logic.v_TachiyomiSy))
         chpState.setText(sharedPreferences.getString("keyState", Logic.v_Manga))
         // set the saved chpType from sharedPrefs
@@ -76,10 +80,13 @@ class MainActivity : AppCompatActivity() {
 
 
         // Get user's discord token
+        chpUsername.setText(Token)
         chpUsername.setOnCloseIconClickListener {
             // Start the LoginDiscord activity and return to MainActivity when it calls finish()
-            val intent = Intent(this, LoginDiscord::class.java)
-            startActivityForResult(intent, 1)
+            if ((Token == "Discord Token") || (Token == "")) {
+                val intent = Intent(this, LoginDiscord::class.java)
+                startActivityForResult(intent, 1)
+            } else resetDiscordToken(null)
         }
 
         // switch between differnet presets
@@ -109,11 +116,11 @@ class MainActivity : AppCompatActivity() {
 
         // Start or Stop RPC and save details to sharedPrefs on click
         swtSwitch.setOnClickListener {
-            if ((chpUsername.text == "Discord Token") || (chpUsername.text == "")) {
+            if ((Token == "Discord Token") || (Token == "")) {
                 Toast.makeText(this, "Enter your discord token first!", Toast.LENGTH_SHORT).show()
                 swtSwitch.isChecked = false
             }
-            else if (chpUsername.text.matches(Regex("^.+$")))   // need to change this lol
+            else if (Token.matches(Regex("^.+$")))   // need to change this lol
             {
                 if (swtSwitch.isChecked())
                     startService(Intent(this, MyService::class.java))
@@ -158,8 +165,25 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun resetDiscordToken(view: View) {
-        Toast.makeText(this, "Whoopsies~! I haven't implemented this feature yet, but you can expect it soon!", Toast.LENGTH_LONG).show()
+    fun resetDiscordToken(view: View?) {
+        // get user's confirmation for resetting discord token
+        AlertDialog.Builder(this)
+            .setTitle("Discord Login")
+            .setMessage("To login to a different Discord account, you will have to restart this app. Continue??")
+            .setPositiveButton("Continue") { dialog, which ->
+                // Delete any exisitng instances of Token in webview cache
+                delete(File(filesDir.parentFile, "app_webview/Default/Local Storage/leveldb"))
+                // remove the saved token
+                prefsEditor.remove("token").commit()
+                // restart the application
+                val ctx = applicationContext; val pm = ctx.packageManager
+                val intent = pm.getLaunchIntentForPackage(ctx.packageName)
+                val mainIntent = Intent.makeRestartActivityTask(intent!!.component)
+                ctx.startActivity(mainIntent)
+                Runtime.getRuntime().exit(0)
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
     }
 
     // open this app's repo on GitHub in browser
