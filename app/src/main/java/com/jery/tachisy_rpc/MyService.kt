@@ -29,7 +29,7 @@ class MyService : Service() {
         const val CHANNEL_NAME = "Discord RPC"
     }
 
-    private var token = MainActivity.chpUsername.text.toString()
+    private var token = MainActivity.Token
     private var type = 0
     private var chType = MainActivity.arrayOfTypes[MainActivity.numType.value]
 

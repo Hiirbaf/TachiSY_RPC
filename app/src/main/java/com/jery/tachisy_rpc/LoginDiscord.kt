@@ -53,6 +53,7 @@ class LoginDiscord : AppCompatActivity() {
         }
         else if (loginToken != null) {
             Toast.makeText(this, "Logged in with token:\n$loginToken", Toast.LENGTH_SHORT).show()
+            MainActivity.Token = loginToken!!
             MainActivity.chpUsername.text = loginToken
             MainActivity.prefsEditor.putString("token", loginToken).commit()
             finish()
@@ -66,14 +67,13 @@ class LoginDiscord : AppCompatActivity() {
     private fun extractToken(): Boolean {
         var readLine: String
         return try {
-            val listFiles = File(
-                filesDir.parentFile,
-                "app_webview/Default/Local Storage/leveldb"
-            ).listFiles { file, str ->
-                str.endsWith(".log")
+            val listFiles = File(filesDir.parentFile, "app_webview/Default/Local Storage/leveldb")
+                .listFiles { file, str ->
+                    str.endsWith(".log")
             }
             if (listFiles!!.isEmpty()) {
-                return false
+                println("cannot find the file with discord token")
+                finish()
             }
             val bufferedReader = BufferedReader(FileReader(listFiles[0]))
             do {
