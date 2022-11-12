@@ -1,35 +1,40 @@
-@file:Suppress("UsePropertyAccessSyntax", "UNUSED_PARAMETER", "SetTextI18n")
+@file:Suppress("UsePropertyAccessSyntax", "UNUSED_PARAMETER", "SetTextI18n", "StaticFieldLeak", "MemberVisibilityCanBePrivate")
 
 package com.jery.tachisy_rpc.utils
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import androidx.appcompat.content.res.AppCompatResources
 import com.jery.tachisy_rpc.MainActivity
 import com.jery.tachisy_rpc.MyService
 import com.jery.tachisy_rpc.R
 
-@SuppressLint("StaticFieldLeak")
-@Suppress("MemberVisibilityCanBePrivate")
 object Logic {
+    // set access vars for the arrays
+    val Preset_names: Array<String> = MainActivity.context.getResources().getStringArray(R.array.Preset_names)
+    val Preset_states: Array<String> = MainActivity.context.getResources().getStringArray(R.array.Preset_states)
+    // setup preset names
+    val v_TachiyomiSy = Preset_names[0]
+    val v_LightNovel = Preset_names[1]
+    val v_Mangago = Preset_names[2]
+    val v_Anime = Preset_names[3]
+    val v_Webtoon = Preset_names[4]
+    // setup preset states
+    val v_Manga = Preset_states[0]
+    val v_Manhwa = Preset_states[1]
+    val v_MoonReader = Preset_states[2]
+    val v_Aniyomi = Preset_states[3]
+    val v_Reading = Preset_states[4]
 
-    const val v_TachiyomiSy = "𝐓𝐚𝐜𝐡𝐢𝐲𝐨𝐦𝐢𝐒𝐘"
-    const val v_Manga = "𝔐𝔞𝔫𝔤𝔞"
-    const val v_Manhwa = "𝔐𝔞𝔫𝔥𝔴𝔞"
-    const val v_LightNovel = "𝐋𝐢𝐠𝐡𝐭 𝐍𝐨𝐯𝐞𝐥"
-    const val v_MoonReader = "𝔐𝔬𝔬𝔫+ ℜ𝔢𝔞𝔡𝔢𝔯"
-    const val v_Aniyomi = "𝙰𝚗𝚒𝚢𝚘𝚖𝚒"
-    const val v_Anime = "𝐀𝐧𝐢𝐦𝐞"
-    const val v_Mangago = "𝐌𝐚𝐧𝐠𝐚𝐠𝐨"
-    const val v_Webtoon = "𝐖𝐞𝐛𝐭𝐨𝐨𝐧"
-    const val v_Reading = "ℜ𝔢𝔞𝔡𝔦𝔫𝔤"
-
-    lateinit var largeImage: String
-    lateinit var smallImage: String
     private val chpName = MainActivity.chpName
     private val chpState = MainActivity.chpState
     private val numType = MainActivity.numType
+    lateinit var largeImage: String
+    lateinit var smallImage: String
 
+    /**
+     * Set the correct chpName, chpState, chipIcons and numType when the chpName is changed
+     * @param activity The activity that calls this function
+     */
     fun nameWasChanged(activity: Activity) {
         if (chpName.getText().toString() == v_TachiyomiSy) {
             chpName.text = v_LightNovel
@@ -79,6 +84,10 @@ object Logic {
         }
     }
 
+    /**
+     * Set the correct chpName, chpState and chipIcon when the chpState is changed
+     * @param activity The activity that calls this function
+     */
     fun stateWasChanged(activity: Activity) {
         if (chpState.getText().toString() == v_Manga) {
             chpState.text = v_Manhwa
@@ -109,6 +118,10 @@ object Logic {
         }
     }
 
+    /**
+     * Set the correct chipIcons when MainActivity's onCreate is triggered
+     * @param activity The activity that calls this function
+     */
     fun restoreCorrectDataOnCreate(activity: Activity) {
         // load the right chipIcon when restoring lastState
         if (chpName.getText().toString() == v_TachiyomiSy) {
@@ -133,7 +146,10 @@ object Logic {
         }
     }
 
-    // restore all details from sharedPrefs
+    /**
+     * restore all details from sharedPrefs
+     * @param none
+     */
     fun restoreFromLastState() {
         // set the saved edtDetails from sharedPrefs
         if (chpName.text == v_TachiyomiSy)
@@ -148,7 +164,10 @@ object Logic {
             MainActivity.edtDetails.setText(MainActivity.sharedPreferences.getString("keyDetails_webtoon", ""))
     }
 
-    // save all details to sharedPrefs
+    /**
+     * save all details to sharedPrefs
+     * @param none
+     */
     fun saveToLastState() {
         // extract chpName, chpState and edtDetails to sharedPrefs
         MainActivity.prefsEditor.putString("keyName", MainActivity.chpName.text.toString()).commit()
@@ -169,6 +188,10 @@ object Logic {
         MainActivity.prefsEditor.putInt("keyCh", MainActivity.numChapter.getValue()).commit()
     }
 
+    /**
+     * Set the largeImage and smallImage urls that are passed are passed on to the rich presence
+     * @param activity The activity that calls this function
+     */
     fun loadRPCData(activity: MyService) {
         if (chpName.getText().toString() == v_TachiyomiSy) {
             largeImage = "attachments/961577469427736636/971135180322529310/unknown.png"
