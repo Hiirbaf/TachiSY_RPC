@@ -12,17 +12,22 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import android.os.PowerManager
 import android.provider.Settings
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.ConfigurationCompat
+import com.blankj.utilcode.util.FileUtils.delete
 import com.google.android.material.chip.Chip
 import com.jery.tachisy_rpc.utils.Logic
-import com.blankj.utilcode.util.FileUtils.delete
 import java.io.File
+import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -38,15 +43,26 @@ class MainActivity : AppCompatActivity() {
 
         lateinit var sharedPreferences : SharedPreferences
         lateinit var prefsEditor: SharedPreferences.Editor
-        var arrayOfTypes = arrayOf("Vol", "Ch", "Ep", "")
+        lateinit var arrayOfTypes: Array<String>    // "Vol", "Ch", "Ep", ""
+        lateinit var context: Context
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu) : Boolean {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menuInflater.inflate(R.menu.switch_locale, menu)
+        return true
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
     // Everything below this will be done when the app is opened.
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        // assign valus to some lateinit vars
         sharedPreferences = getSharedPreferences("lastState", Context.MODE_PRIVATE)
         prefsEditor = sharedPreferences.edit()
+        arrayOfTypes = resources.getStringArray(R.array.array_of_types)
+        context = this
 
         // assign the screen components to variables that can be accessed from within other classes and methods.
         chpUsername = findViewById(R.id.chpUsername)
@@ -58,7 +74,7 @@ class MainActivity : AppCompatActivity() {
         swtSwitch = findViewById(R.id.swtRPC)
 
         // From sharedPrefs, restore the Token, name and then remaining keys
-        Token = sharedPreferences.getString("token","Discord Token").toString()
+        Token = sharedPreferences.getString("token",getString(R.string.Discord_Token)).toString()
         chpName.setText(sharedPreferences.getString("keyName",Logic.v_TachiyomiSy))
         chpState.setText(sharedPreferences.getString("keyState", Logic.v_Manga))
         // set the saved chpType from sharedPrefs
@@ -78,12 +94,11 @@ class MainActivity : AppCompatActivity() {
             swtSwitch.isChecked = true
         }
 
-
         // Get user's discord token
         chpUsername.setText(Token)
         chpUsername.setOnCloseIconClickListener {
             // Start the LoginDiscord activity and return to MainActivity when it calls finish()
-            if ((Token == "Discord Token") || (Token == "")) {
+            if ((Token == getString(R.string.Discord_Token)) || (Token == "")) {
                 val intent = Intent(this, LoginDiscord::class.java)
                 startActivityForResult(intent, 1)
             } else resetDiscordToken(null)
@@ -116,8 +131,8 @@ class MainActivity : AppCompatActivity() {
 
         // Start or Stop RPC and save details to sharedPrefs on click
         swtSwitch.setOnClickListener {
-            if ((Token == "Discord Token") || (Token == "")) {
-                Toast.makeText(this, "Enter your discord token first!", Toast.LENGTH_SHORT).show()
+            if ((Token == getString(R.string.Discord_Token)) || (Token == "")) {
+                Toast.makeText(this, getString(R.string.Enter_your_discord_token_first), Toast.LENGTH_SHORT).show()
                 swtSwitch.isChecked = false
             }
             else if (Token.matches(Regex("^.+$")))   // need to change this lol
@@ -127,7 +142,7 @@ class MainActivity : AppCompatActivity() {
                 else
                     stopService(Intent(this, MyService::class.java))
             } else {
-                Toast.makeText(this,"Recheck the entered discord token for typos!" , Toast.LENGTH_SHORT).show()
+                Toast.makeText(this,getString(R.string.Recheck_token_for_typos) , Toast.LENGTH_SHORT).show()
                 swtSwitch.isChecked = false
             }
         }
@@ -159,7 +174,7 @@ class MainActivity : AppCompatActivity() {
         } else {
             Toast.makeText(
                 this@MainActivity,
-                "Battery optimization already disabled",
+                getString(R.string.Battery_optimization_already_disabled),
                 Toast.LENGTH_SHORT
             ).show()
         }
@@ -168,21 +183,17 @@ class MainActivity : AppCompatActivity() {
     fun resetDiscordToken(view: View?) {
         // get user's confirmation for resetting discord token
         AlertDialog.Builder(this)
-            .setTitle("Discord Login")
-            .setMessage("To login to a different Discord account, you will have to restart this app. Continue??")
-            .setPositiveButton("Continue") { dialog, which ->
+            .setTitle(getString(R.string.Discord_Login))
+            .setMessage(getString(R.string.Login_to_different_discord_account))
+            .setPositiveButton(getString(R.string.Continue)) { dialog, which ->
                 // Delete any exisitng instances of Token in webview cache
                 delete(File(filesDir.parentFile, "app_webview/Default/Local Storage/leveldb"))
                 // remove the saved token
                 prefsEditor.remove("token").commit()
                 // restart the application
-                val ctx = applicationContext; val pm = ctx.packageManager
-                val intent = pm.getLaunchIntentForPackage(ctx.packageName)
-                val mainIntent = Intent.makeRestartActivityTask(intent!!.component)
-                ctx.startActivity(mainIntent)
-                Runtime.getRuntime().exit(0)
+                restartApp()
             }
-            .setNegativeButton("Cancel", null)
+            .setNegativeButton(getString(R.string.Cancel), null)
             .show()
     }
 
@@ -202,5 +213,29 @@ class MainActivity : AppCompatActivity() {
                 return true
         }
         return false
+    }
+
+    // Function to restart this app
+    private fun restartApp() {
+        stopService(Intent(this, MyService::class.java))
+        val ctx = applicationContext; val pm = ctx.packageManager
+        val intent = pm.getLaunchIntentForPackage(ctx.packageName)
+        val mainIntent = Intent.makeRestartActivityTask(intent!!.component)
+        ctx.startActivity(mainIntent)
+        Runtime.getRuntime().exit(0)
+    }
+
+    fun switchLocale(mi: MenuItem?) {
+        Toast.makeText(this, "Switching Locale..", Toast.LENGTH_SHORT).show()
+        val dLocale: Locale
+        if (ConfigurationCompat.getLocales(resources.configuration)[0]!!.equals("en"))
+            dLocale = Locale("de")
+        else
+            dLocale = Locale("en")
+        Locale.setDefault(dLocale)
+        val configuration = Configuration()
+        configuration.setLocale(dLocale)
+        this.applyOverrideConfiguration(configuration)
+        restartApp()
     }
 }

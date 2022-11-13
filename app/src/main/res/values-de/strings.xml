@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--suppress CheckTagEmptyBody -->
+<resources>
+    <!--    Preset's variables  -->
+    <string-array name="Preset_names">
+        <item>𝐓𝐚𝐜𝐡𝐢𝐲𝐨𝐦𝐢𝐒𝐘</item>
+        <item>𝐋𝐢𝐠𝐡𝐭 𝐍𝐨𝐯𝐞𝐥</item>
+        <item>𝐀𝐧𝐢𝐦𝐞</item>
+        <item>𝐌𝐚𝐧𝐠𝐚𝐠𝐨</item>
+        <item>𝐖𝐞𝐛𝐭𝐨𝐨𝐧</item>
+    </string-array>
+    <string-array name="Preset_states">
+        <item>𝔐𝔞𝔫𝔤𝔞</item>
+        <item>𝔐𝔞𝔫𝔥𝔴𝔞</item>
+        <item>𝔐𝔬𝔬𝔫+ ℜ𝔢𝔞𝔡𝔢𝔯</item>
+        <item>𝙰𝚗𝚒𝚢𝚘𝚖𝚒</item>
+        <item>ℜ𝔢𝔞𝔡𝔦𝔫𝔤</item>
+    </string-array>
+    <string-array name="array_of_types">
+        <item>Vol</item>
+        <item>Ch</item>
+        <item>Ep</item>
+        <item></item>
+    </string-array>
+    <!--    MainActivity    -->
+    <string name="app_name">TachiSY RPC</string>
+    <string name="Account_Token">Konto Token</string>
+    <string name="Discord_Token">Discord Token</string>
+    <string name="Activity_Name">Aktivitäts Name</string>
+    <string name="Activity_State">Aktivitäts Status</string>
+    <string name="Activity_Details">Aktivitäts Details</string>
+    <string name="Paste_text_to_details">Text aus der Zwischenablage in edtDetails einfügen</string>
+    <string name="RPC_STATE">RPC STATE</string>
+    <string name="Things_you_can_do">Dinge die du tun kannst</string>
+    <string name="Ignore_battery_optimization">Ignorieren Sie die Batterieoptimierung, um zu verhindern, dass die App im Hintergrund beendet wird.</string>
+    <string name="Login_to_a_different_discord_account">Melden Sie sich bei einem anderen Discord-Konto an.</string>
+    <string name="Show_app_repo">Repository dieser App auf GitHub anzeigen.</string>
+    <string name="Login_to_different_discord_account">Um sich bei einem anderen Discord Konto anzumelden, müssen Sie diese App neu starten. Fortsetzen??</string>
+    <string name="Enter_your_discord_token_first">Geben Sie zuerst Ihren Discord Token ein!</string>
+    <string name="Recheck_token_for_typos">Überprüfen Sie das eingegebene Discord Token erneut auf Tippfehler!</string>
+    <string name="Battery_optimization_already_disabled">Batterieoptimierung bereits deaktiviert</string>
+    <string name="Discord_Login">Discord Login</string>
+    <string name="Continue">Fortsetzen</string>
+    <string name="Cancel">Absagen</string>
+    <string name="switch_locale">Switch Locale</string>
+    <!--    MyService   -->
+    <string name="watching">Aufpassen</string>
+    <string name="playing">spielen</string>
+    <string name="Open">Offen</string>
+    <string name="Restart">Neu starten</string>
+    <string name="Exit">Ausgang</string>
+    <string name="Stopping_RPC">RPC stoppen</string>
+    <string name="notification_description">Benachrichtigung wird angezeigt, wenn Rich Presence aktiv ist</string>
+</resources>

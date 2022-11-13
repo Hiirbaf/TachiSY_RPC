@@ -1,6 +1,5 @@
 package com.jery.tachisy_rpc
 
-import android.annotation.SuppressLint
 import android.app.*
 import android.content.Context
 import android.content.Intent
@@ -10,7 +9,6 @@ import com.jery.tachisy_rpc.rpc.RPCService
 import com.jery.tachisy_rpc.utils.Logic
 
 
-@SuppressLint("UseSwitchCompatOrMaterialCode")
 class MyService : Service() {
     companion object {
         // Set up some public variables that will be used between classes and activities
@@ -29,6 +27,7 @@ class MyService : Service() {
         const val CHANNEL_NAME = "Discord RPC"
     }
 
+    // set up some variables for the internal operations
     private var token = MainActivity.Token
     private var type = 0
     private var chType = MainActivity.arrayOfTypes[MainActivity.numType.value]
@@ -37,13 +36,13 @@ class MyService : Service() {
     private var restartService: Boolean? = false
     private val rpc = RPCService(token) //Discord account token
 
+    // Variables for the notification
     private lateinit var notiBtnOneIntent: Intent
     private lateinit var notiBtnTwoIntent: Intent
     private lateinit var notiBtnOneText: String
     private lateinit var notiBtnTwoText: String
 
     // When this service is started from another activity
-    @SuppressLint("SetTextI18n")
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         // If the Exit button is pressed in Notification
         if (intent?.action.equals(ACTION_STOP_SERVICE)) stopSelf()
@@ -60,6 +59,7 @@ class MyService : Service() {
             restartService = true
             stopSelf()
         }
+        // If the -1 btn is pressed in the Notification
         else if (intent?.action.equals(ACTION_SUB_ONE)) {
             MainActivity.numChapter.value = MainActivity.numChapter.value - 1
             println("new chapter number = ${MainActivity.numChapter.value}")
@@ -67,6 +67,7 @@ class MyService : Service() {
             restartService = true
             stopSelf()
         }
+        // If the +1 btn is pressed in the Notification
         else if (intent?.action.equals(ACTION_ADD_ONE)) {
             MainActivity.numChapter.value = MainActivity.numChapter.value + 1
             println("new chapter number = ${MainActivity.numChapter.value}")
@@ -76,19 +77,20 @@ class MyService : Service() {
         }
         // When the service starts (And no button is pressed in notification (obviously))
         else {
+            // setup vars that will be used by the rich presence service
             Logic.loadRPCData(this)
             Logic.saveToLastState()
 
-            var chapterType = " $chType "
+            var chapterType = " $chType "   // surround chType with spaces
             var chapterNumber = MainActivity.numChapter.value.toString()
-            if (chType == "") { chapterType = ""; chapterNumber = "" }
+            if (chType == "") { chapterType = ""; chapterNumber = "" }  // If chType is blank, then empty the chapterType and chapterNumber
 
             if (MainActivity.chpName.text == Logic.v_Anime) {
                 type = 3
-                Toast.makeText(this, "watching " + MainActivity.chpName.text.toString() + "\n" + MainActivity.chpState.text + ":「" + MainActivity.edtDetails.text + chapterType + chapterNumber + "」", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "${getString(R.string.watching)} ${MainActivity.chpName.text}\n${MainActivity.chpState.text}:「${MainActivity.edtDetails.text.trim()} $chapterType $chapterNumber」", Toast.LENGTH_SHORT).show()
             }else {
                 type = 0
-                Toast.makeText(this, "playing " + MainActivity.chpName.text.toString() + "\n" + MainActivity.chpState.text + ":「" + MainActivity.edtDetails.text + chapterType + chapterNumber + "」", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "${getString(R.string.playing)} ${MainActivity.chpName.text}\n${MainActivity.chpState.text}:「${MainActivity.edtDetails.text.trim()} $chapterType $chapterNumber」", Toast.LENGTH_SHORT).show()
             }
             val activityDetails = "${MainActivity.edtDetails.text.trim()}$chapterType$chapterNumber"
 
@@ -106,13 +108,13 @@ class MyService : Service() {
             MainActivity.swtSwitch.isChecked = true
             setName = MainActivity.chpName.text.toString()
             setState = MainActivity.chpState.text.toString()
-            setDetails = MainActivity.edtDetails.text.toString()
+            setDetails = MainActivity.edtDetails.text.toString().trim()
             setType = MainActivity.numType.value
             setCh = MainActivity.numChapter.value
 
             // Create a new channel in notifications
             val channel = NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_LOW)
-            channel.description = "Notification displayed when rich presence is active"
+            channel.description = getString(R.string.notification_description)
             val manager = getSystemService(NotificationManager::class.java)
             manager.createNotificationChannel(channel)
 
@@ -131,14 +133,14 @@ class MyService : Service() {
                 println("Incremental details detected!")
                 notiBtnOneIntent = subIntent
                 notiBtnTwoIntent = addIntent
-                notiBtnOneText = "-1"
-                notiBtnTwoText = "+1"
+                notiBtnOneText = "-1 $chType"
+                notiBtnTwoText = "+1 $chType"
             } else {
                 println("Non-Incremental details detected!")
                 notiBtnOneIntent = openIntent
                 notiBtnTwoIntent = restartIntent
-                notiBtnOneText = "Open"
-                notiBtnTwoText = "Restart"
+                notiBtnOneText = getString(R.string.Open)
+                notiBtnTwoText = getString(R.string.Restart)
             }
 
             @Suppress("DEPRECATION")
@@ -150,7 +152,7 @@ class MyService : Service() {
                     .setContentText("「$activityDetails」")
                     .setSubText(MainActivity.chpState.text)
                     .setUsesChronometer(true)
-                    .addAction(R.drawable.ic_rpc_placeholder, "Exit", PendingIntent.getService(this, 0, stopIntent, PendingIntent.FLAG_IMMUTABLE))
+                    .addAction(R.drawable.ic_rpc_placeholder, getString(R.string.Exit), PendingIntent.getService(this, 0, stopIntent, PendingIntent.FLAG_IMMUTABLE))
                     .addAction(R.drawable.ic_rpc_placeholder, notiBtnOneText, PendingIntent.getService(this, 0, notiBtnOneIntent,PendingIntent.FLAG_IMMUTABLE))
                     .addAction(R.drawable.ic_rpc_placeholder, notiBtnTwoText, PendingIntent.getService(this, 0, notiBtnTwoIntent,PendingIntent.FLAG_IMMUTABLE))
                     .build()
@@ -168,7 +170,7 @@ class MyService : Service() {
         if (restartService == true)
             startService(Intent(this, MyService::class.java))
         else
-            Toast.makeText(this, "Stopping RPC", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.Stopping_RPC), Toast.LENGTH_SHORT).show()
     }
 
     override fun onBind(intent: Intent): IBinder {
