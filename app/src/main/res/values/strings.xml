@@ -42,7 +42,8 @@
     <string name="Discord_Login">Discord Login</string>
     <string name="Continue">Continue</string>
     <string name="Cancel">Cancel</string>
-    <string name="switch_locale">Switch Locale</string>
+    <string name="restart_app">Restart App</string>
+    <string name="switch_account">Switch Account</string>
     <!--    MyService   -->
     <string name="watching">watching</string>
     <string name="playing">playing</string>

@@ -6,13 +6,10 @@
 
 package com.jery.tachisy_rpc
 
+import android.app.Activity
 import android.app.ActivityManager
 import android.app.AlertDialog
-import android.content.ClipboardManager
-import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
-import android.content.res.Configuration
+import android.content.*
 import android.net.Uri
 import android.os.Bundle
 import android.os.PowerManager
@@ -22,12 +19,11 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.ConfigurationCompat
+import androidx.appcompat.content.res.AppCompatResources
 import com.blankj.utilcode.util.FileUtils.delete
 import com.google.android.material.chip.Chip
 import com.jery.tachisy_rpc.utils.Logic
 import java.io.File
-import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -43,13 +39,14 @@ class MainActivity : AppCompatActivity() {
 
         lateinit var sharedPreferences : SharedPreferences
         lateinit var prefsEditor: SharedPreferences.Editor
-        lateinit var arrayOfTypes: Array<String>    // "Vol", "Ch", "Ep", ""
-        lateinit var context: Context
+        lateinit var arrayOfTypes: Array<String>    // ["Vol", "Ch", "Ep", ""]
+        lateinit var Main_Context: Context
+        lateinit var Main_Activity: Activity
     }
 
     override fun onCreateOptionsMenu(menu: Menu) : Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.switch_locale, menu)
+        menuInflater.inflate(R.menu.menu, menu)
         return true
     }
 
@@ -62,7 +59,7 @@ class MainActivity : AppCompatActivity() {
         sharedPreferences = getSharedPreferences("lastState", Context.MODE_PRIVATE)
         prefsEditor = sharedPreferences.edit()
         arrayOfTypes = resources.getStringArray(R.array.array_of_types)
-        context = this
+        Main_Context = this; Main_Activity = this
 
         // assign the screen components to variables that can be accessed from within other classes and methods.
         chpUsername = findViewById(R.id.chpUsername)
@@ -148,11 +145,13 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Easter Egg!! - Long click paste btn in Activity Details to copy the details to clipboard
-//        findViewById<ImageButton>(R.id.imgPasteDetails).setOnLongClickListener() {
-//            val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-//            val clip = ClipData.newPlainText("Activity Details", edtDetails.text.toString())
-//            clipboard.setPrimaryClip(clip!!)
-//        }
+        findViewById<ImageButton>(R.id.imgPasteDetails).setOnLongClickListener() {
+            val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+            val clip = ClipData.newPlainText("Activity Details", edtDetails.text.toString())
+            clipboard.setPrimaryClip(clip!!)
+            Toast.makeText(this, "Copied text to clipboard!", Toast.LENGTH_SHORT).show()
+            return@setOnLongClickListener false
+        }
     }
 
     // Copy text in edtDetails to the clipboard
@@ -191,11 +190,12 @@ class MainActivity : AppCompatActivity() {
                 // remove the saved token
                 prefsEditor.remove("token").commit()
                 // restart the application
-                restartApp()
+                restartApp(null)
             }
             .setNegativeButton(getString(R.string.Cancel), null)
             .show()
     }
+    fun menuSwitchAccount(mi: MenuItem?) {resetDiscordToken(null)}
 
     // open this app's repo on GitHub in browser
     fun openGithubRepo(view: View?) {
@@ -216,26 +216,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     // Function to restart this app
-    private fun restartApp() {
+    fun restartApp(mi: MenuItem?) {
         stopService(Intent(this, MyService::class.java))
         val ctx = applicationContext; val pm = ctx.packageManager
         val intent = pm.getLaunchIntentForPackage(ctx.packageName)
         val mainIntent = Intent.makeRestartActivityTask(intent!!.component)
         ctx.startActivity(mainIntent)
         Runtime.getRuntime().exit(0)
-    }
-
-    fun switchLocale(mi: MenuItem?) {
-        Toast.makeText(this, "Switching Locale..", Toast.LENGTH_SHORT).show()
-        val dLocale: Locale
-        if (ConfigurationCompat.getLocales(resources.configuration)[0]!!.equals("en"))
-            dLocale = Locale("de")
-        else
-            dLocale = Locale("en")
-        Locale.setDefault(dLocale)
-        val configuration = Configuration()
-        configuration.setLocale(dLocale)
-        this.applyOverrideConfiguration(configuration)
-        restartApp()
     }
 }
