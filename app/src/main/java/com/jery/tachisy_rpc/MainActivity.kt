@@ -1,16 +1,20 @@
 @file:Suppress("UseSwitchCompatOrMaterialCode", "UnusedImport", "UNUSED_VARIABLE", "SetTextI18n",
     "UsePropertyAccessSyntax", "SpellCheckingInspection", "StaticFieldLeak",
     "LiftReturnOrAssignment", "DEPRECATION", "BatteryLife", "ApplySharedPref", "UNUSED_ANONYMOUS_PARAMETER",
-    "UNUSED_PARAMETER", "CommitPrefEdits", "MissingInflatedId"
+    "UNUSED_PARAMETER", "CommitPrefEdits", "MissingInflatedId",
+    "RemoveEmptyParenthesesFromLambdaCall"
 )
 
 package com.jery.tachisy_rpc
 
+import android.Manifest
 import android.app.Activity
 import android.app.ActivityManager
 import android.app.AlertDialog
 import android.content.*
+import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.PowerManager
 import android.provider.Settings
@@ -20,7 +24,9 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.app.ActivityCompat
 import com.blankj.utilcode.util.FileUtils.delete
+import com.blankj.utilcode.util.NotificationUtils
 import com.google.android.material.chip.Chip
 import com.jery.tachisy_rpc.utils.Logic
 import java.io.File
@@ -179,6 +185,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // Sign out of discord
     fun resetDiscordToken(view: View?) {
         // get user's confirmation for resetting discord token
         AlertDialog.Builder(this)

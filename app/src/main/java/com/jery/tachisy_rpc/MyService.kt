@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.IBinder
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import com.blankj.utilcode.util.NotificationUtils
 import com.jery.tachisy_rpc.rpc.RPCService
 import com.jery.tachisy_rpc.utils.Logic
 
@@ -94,6 +96,69 @@ class MyService : Service() {
             }
             val activityDetails = "${MainActivity.edtDetails.text.trim()}$chapterType$chapterNumber"
 
+            // Display Notification
+            if (!NotificationUtils.areNotificationsEnabled()) {
+                val permission = "android.permission.POST_NOTIFICATIONS"
+                val activity = MainActivity.Main_Activity
+                if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)) {
+                    AlertDialog.Builder(activity)
+                        .setTitle(getString(R.string.permission_needed))
+                        .setMessage(R.string.notification_permission_is_needed)
+                        .setPositiveButton("Ok") { _, _ ->
+                            ActivityCompat.requestPermissions(activity, arrayOf(permission), 101)
+                        }
+                        .setNegativeButton("Cancel", null)
+                        .create().show()
+                } else {
+                    ActivityCompat.requestPermissions(activity, arrayOf(permission), 101)
+                }
+            } else {
+                // Create a new channel in notifications
+                val channel = NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_LOW)
+                channel.description = getString(R.string.notification_description)
+                val manager = getSystemService(NotificationManager::class.java)
+                manager.createNotificationChannel(channel)
+
+                val stopIntent = Intent(this, MyService::class.java)
+                stopIntent.action = ACTION_STOP_SERVICE
+                val openIntent = Intent(this, MyService::class.java)
+                openIntent.action = ACTION_OPEN_APP
+                val restartIntent = Intent(this, MyService::class.java)
+                restartIntent.action = ACTION_RESTART_SERVICE
+                val subIntent = Intent(this, MyService::class.java)
+                subIntent.action = ACTION_SUB_ONE
+                val addIntent = Intent(this, MyService::class.java)
+                addIntent.action = ACTION_ADD_ONE
+
+                if (activityDetails.matches(Regex("^.+\\s((Vol)|(Ch)|(Ep))\\s\\d{1,4}\\s*$"))) {
+                    notiBtnOneIntent = subIntent
+                    notiBtnTwoIntent = addIntent
+                    notiBtnOneText = "-1 $chType"
+                    notiBtnTwoText = "+1 $chType"
+                } else {
+                    notiBtnOneIntent = openIntent
+                    notiBtnTwoIntent = restartIntent
+                    notiBtnOneText = getString(R.string.Open)
+                    notiBtnTwoText = getString(R.string.Restart)
+                }
+
+                @Suppress("DEPRECATION")
+                startForeground(
+                    99961,
+                    Notification.Builder(context, CHANNEL_ID)
+                        .setSmallIcon(R.drawable.ic_rpc_placeholder)
+                        .setContentTitle(MainActivity.chpName.text)
+                        .setContentText("「$activityDetails」")
+                        .setSubText(MainActivity.chpState.text)
+                        .setUsesChronometer(true)
+                        .addAction(R.drawable.ic_rpc_placeholder, getString(R.string.Exit), PendingIntent.getService(this, 0, stopIntent, PendingIntent.FLAG_IMMUTABLE))
+                        .addAction(R.drawable.ic_rpc_placeholder, notiBtnOneText, PendingIntent.getService(this, 0, notiBtnOneIntent, PendingIntent.FLAG_IMMUTABLE))
+                        .addAction(R.drawable.ic_rpc_placeholder, notiBtnTwoText, PendingIntent.getService(this, 0, notiBtnTwoIntent, PendingIntent.FLAG_IMMUTABLE))
+                        .build()
+                )
+            }
+
+            // Setup Rich Presence
             rpc.setName(MainActivity.chpName.text.toString())
                 .setState(MainActivity.chpState.text.toString())
                 .setDetails("「$activityDetails」")
@@ -111,53 +176,6 @@ class MyService : Service() {
             setDetails = MainActivity.edtDetails.text.toString().trim()
             setType = MainActivity.numType.value
             setCh = MainActivity.numChapter.value
-
-            // Create a new channel in notifications
-            val channel = NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_LOW)
-            channel.description = getString(R.string.notification_description)
-            val manager = getSystemService(NotificationManager::class.java)
-            manager.createNotificationChannel(channel)
-
-            val stopIntent = Intent(this, MyService::class.java)
-            stopIntent.action = ACTION_STOP_SERVICE
-            val openIntent = Intent(this, MyService::class.java)
-            openIntent.action = ACTION_OPEN_APP
-            val restartIntent = Intent(this, MyService::class.java)
-            restartIntent.action = ACTION_RESTART_SERVICE
-            val subIntent = Intent(this, MyService::class.java)
-            subIntent.action = ACTION_SUB_ONE
-            val addIntent = Intent(this, MyService::class.java)
-            addIntent.action = ACTION_ADD_ONE
-
-            if (activityDetails.matches(Regex("^.+\\s((Vol)|(Ch)|(Ep))\\s\\d{1,4}\\s*$"))) {
-                println("Incremental details detected!")
-                notiBtnOneIntent = subIntent
-                notiBtnTwoIntent = addIntent
-                notiBtnOneText = "-1 $chType"
-                notiBtnTwoText = "+1 $chType"
-            } else {
-                println("Non-Incremental details detected!")
-                notiBtnOneIntent = openIntent
-                notiBtnTwoIntent = restartIntent
-                notiBtnOneText = getString(R.string.Open)
-                notiBtnTwoText = getString(R.string.Restart)
-            }
-
-            @Suppress("DEPRECATION")
-            startForeground(
-                99961,
-                Notification.Builder(context, CHANNEL_ID)
-                    .setSmallIcon(R.drawable.ic_rpc_placeholder)
-                    .setContentTitle(MainActivity.chpName.text)
-                    .setContentText("「$activityDetails」")
-                    .setSubText(MainActivity.chpState.text)
-                    .setUsesChronometer(true)
-                    .addAction(R.drawable.ic_rpc_placeholder, getString(R.string.Exit), PendingIntent.getService(this, 0, stopIntent, PendingIntent.FLAG_IMMUTABLE))
-                    .addAction(R.drawable.ic_rpc_placeholder, notiBtnOneText, PendingIntent.getService(this, 0, notiBtnOneIntent,PendingIntent.FLAG_IMMUTABLE))
-                    .addAction(R.drawable.ic_rpc_placeholder, notiBtnTwoText, PendingIntent.getService(this, 0, notiBtnTwoIntent,PendingIntent.FLAG_IMMUTABLE))
-                    .build()
-            )
-
             return START_STICKY
         }
         return super.onStartCommand(intent, flags, startId)
