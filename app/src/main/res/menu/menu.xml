@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/restartApp"
+        android:icon="@android:drawable/ic_menu_rotate"
+        android:onClick="restartApp"
+        android:title="@string/restart_app"
+        android:titleCondensed="Locale"
+        android:tooltipText="Switch locale"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/switchAccount"
+        android:icon="@drawable/ic_discord"
+        android:onClick="menuSwitchAccount"
+        android:title="@string/switch_account"
+        android:titleCondensed="Account"
+        android:tooltipText="Switch Account"
+        app:showAsAction="never" />
+</menu>

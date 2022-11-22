@@ -30,7 +30,7 @@
     <string name="Activity_State">Aktivitäts Status</string>
     <string name="Activity_Details">Aktivitäts Details</string>
     <string name="Paste_text_to_details">Text aus der Zwischenablage in edtDetails einfügen</string>
-    <string name="RPC_STATE">RPC STATE</string>
+    <string name="RPC_STATE">RPC STATUS</string>
     <string name="Things_you_can_do">Dinge die du tun kannst</string>
     <string name="Ignore_battery_optimization">Ignorieren Sie die Batterieoptimierung, um zu verhindern, dass die App im Hintergrund beendet wird.</string>
     <string name="Login_to_a_different_discord_account">Melden Sie sich bei einem anderen Discord-Konto an.</string>
@@ -42,7 +42,8 @@
     <string name="Discord_Login">Discord Login</string>
     <string name="Continue">Fortsetzen</string>
     <string name="Cancel">Absagen</string>
-    <string name="switch_locale">Switch Locale</string>
+    <string name="restart_app">App neu starten</string>
+    <string name="switch_account">Switch Account</string>
     <!--    MyService   -->
     <string name="watching">Aufpassen</string>
     <string name="playing">spielen</string>
@@ -51,4 +52,6 @@
     <string name="Exit">Ausgang</string>
     <string name="Stopping_RPC">RPC stoppen</string>
     <string name="notification_description">Benachrichtigung wird angezeigt, wenn Rich Presence aktiv ist</string>
+    <string name="notification_permission_is_needed">Die Benachrichtigungsberechtigung ist erforderlich, um Benachrichtigungen ab Android 13 anzuzeigen! Drücken Sie im nächsten Dialog auf „Zulassen“.</string>
+    <string name="permission_needed">Erlaubnis erforderlich</string>
 </resources>

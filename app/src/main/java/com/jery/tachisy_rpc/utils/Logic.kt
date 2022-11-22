@@ -10,20 +10,20 @@ import com.jery.tachisy_rpc.R
 
 object Logic {
     // set access vars for the arrays
-    val Preset_names: Array<String> = MainActivity.context.getResources().getStringArray(R.array.Preset_names)
-    val Preset_states: Array<String> = MainActivity.context.getResources().getStringArray(R.array.Preset_states)
+    val Preset_Names: Array<String> = MainActivity.Main_Context.getResources().getStringArray(R.array.Preset_names)
+    val Preset_States: Array<String> = MainActivity.Main_Context.getResources().getStringArray(R.array.Preset_states)
     // setup preset names
-    val v_TachiyomiSy = Preset_names[0]
-    val v_LightNovel = Preset_names[1]
-    val v_Mangago = Preset_names[2]
-    val v_Anime = Preset_names[3]
-    val v_Webtoon = Preset_names[4]
+    val v_TachiyomiSy = Preset_Names[0]
+    val v_LightNovel = Preset_Names[1]
+    val v_Mangago = Preset_Names[2]
+    val v_Anime = Preset_Names[3]
+    val v_Webtoon = Preset_Names[4]
     // setup preset states
-    val v_Manga = Preset_states[0]
-    val v_Manhwa = Preset_states[1]
-    val v_MoonReader = Preset_states[2]
-    val v_Aniyomi = Preset_states[3]
-    val v_Reading = Preset_states[4]
+    val v_Manga = Preset_States[0]
+    val v_Manhwa = Preset_States[1]
+    val v_MoonReader = Preset_States[2]
+    val v_Aniyomi = Preset_States[3]
+    val v_Reading = Preset_States[4]
 
     private val chpName = MainActivity.chpName
     private val chpState = MainActivity.chpState
@@ -148,7 +148,7 @@ object Logic {
 
     /**
      * restore all details from sharedPrefs
-     * @param none
+     * @param
      */
     fun restoreFromLastState() {
         // set the saved edtDetails from sharedPrefs
@@ -166,7 +166,7 @@ object Logic {
 
     /**
      * save all details to sharedPrefs
-     * @param none
+     * @param
      */
     fun saveToLastState() {
         // extract chpName, chpState and edtDetails to sharedPrefs

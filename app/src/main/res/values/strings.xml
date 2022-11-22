@@ -42,7 +42,8 @@
     <string name="Discord_Login">Discord Login</string>
     <string name="Continue">Continue</string>
     <string name="Cancel">Cancel</string>
-    <string name="switch_locale">Switch Locale</string>
+    <string name="restart_app">Restart App</string>
+    <string name="switch_account">Switch Account</string>
     <!--    MyService   -->
     <string name="watching">watching</string>
     <string name="playing">playing</string>
@@ -51,4 +52,6 @@
     <string name="Exit">Exit</string>
     <string name="Stopping_RPC">Stopping RPC</string>
     <string name="notification_description">Notification displayed when rich presence is active</string>
+    <string name="permission_needed">Permission Needed</string>
+    <string name="notification_permission_is_needed">Notification permission is needed to show notification from Android 13 onwards!\nPress \'Allow\' in the next dialog.</string>
 </resources>
