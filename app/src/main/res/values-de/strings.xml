@@ -54,4 +54,5 @@
     <string name="notification_description">Benachrichtigung wird angezeigt, wenn Rich Presence aktiv ist</string>
     <string name="notification_permission_is_needed">Die Benachrichtigungsberechtigung ist erforderlich, um Benachrichtigungen ab Android 13 anzuzeigen! Drücken Sie im nächsten Dialog auf „Zulassen“.</string>
     <string name="permission_needed">Erlaubnis erforderlich</string>
+    <string name="day_or_night_theme">Tag/Nacht-Thema</string>
 </resources>

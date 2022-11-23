@@ -23,6 +23,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.ActivityCompat
 import com.blankj.utilcode.util.FileUtils.delete
@@ -58,7 +59,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
     // Everything below this will be done when the app is opened.
-        super.onCreate(savedInstanceState)
+        super.onCreate(null)
         setContentView(R.layout.activity_main)
 
         // assign valus to some lateinit vars
@@ -66,6 +67,9 @@ class MainActivity : AppCompatActivity() {
         prefsEditor = sharedPreferences.edit()
         arrayOfTypes = resources.getStringArray(R.array.array_of_types)
         Main_Context = this; Main_Activity = this
+
+        // restore the last set theme
+        AppCompatDelegate.setDefaultNightMode(sharedPreferences.getInt("keyTheme", AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM))
 
         // assign the screen components to variables that can be accessed from within other classes and methods.
         chpUsername = findViewById(R.id.chpUsername)
@@ -83,7 +87,7 @@ class MainActivity : AppCompatActivity() {
         // set the saved chpType from sharedPrefs
         numChapter.value = sharedPreferences.getInt("keyCh", 0)
         // load the correct states
-        Logic.restoreFromLastState()
+        restoreFromLastState()
         // load the right chipIcon when restoring lastState
         Logic.restoreCorrectDataOnCreate(this)
 
@@ -109,13 +113,13 @@ class MainActivity : AppCompatActivity() {
 
         // switch between differnet presets
         chpName.setOnCloseIconClickListener {
-            Logic.nameWasChanged(this)
-            Logic.restoreFromLastState()
+            nameWasChanged(this)
+            restoreFromLastState()
         }
 
         // inter-switch the name and state chips
         chpState.setOnCloseIconClickListener {
-            Logic.stateWasChanged(this)
+            stateWasChanged(this)
         }
 
         // Setup numType's options and restore last state
@@ -230,5 +234,112 @@ class MainActivity : AppCompatActivity() {
         val mainIntent = Intent.makeRestartActivityTask(intent!!.component)
         ctx.startActivity(mainIntent)
         Runtime.getRuntime().exit(0)
+    }
+
+    fun themeSwitch(item: MenuItem) {
+        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES)
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        else
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        prefsEditor.putInt("keyTheme", AppCompatDelegate.getDefaultNightMode()).commit()
+    }
+
+
+    /**
+     * Set the correct chpName, chpState, chipIcons and numType when the chpName is changed
+     * @param activity The activity that calls this function
+     */
+    private fun nameWasChanged(activity: Activity = this) {
+        if (chpName.getText().toString() == Logic.v_TachiyomiSy) {
+            chpName.text = Logic.v_LightNovel
+            chpState.text = Logic.v_MoonReader
+            chpName.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_reading_ln)
+            chpState.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_moon_reader)
+            numType.value = 0
+        }
+        else if ((chpName.getText().toString() == Logic.v_LightNovel) || (chpName.getText().toString() == Logic.v_MoonReader)) {
+            chpName.text = Logic.v_Aniyomi
+            chpState.text = Logic.v_Anime
+            chpName.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_aniyomi)
+            chpState.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_watching)
+            numType.value = 2
+        }
+        else if ((chpName.getText().toString() == Logic.v_Aniyomi) || (chpName.getText().toString() == Logic.v_Anime)) {
+            chpName.text = Logic.v_Mangago
+            chpState.text = Logic.v_Manga
+            chpName.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_mangago)
+            chpState.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_reading)
+            numType.value = 0
+        }
+        else if (chpName.getText().toString() == Logic.v_Mangago) {
+            chpName.text = Logic.v_Webtoon
+            chpState.text = Logic.v_Reading
+            chpName.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_webtoon)
+            chpState.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_reading)
+            numType.value = 2
+        }
+        else if (chpName.getText().toString() == Logic.v_Webtoon) {
+            chpName.text = Logic.v_TachiyomiSy
+            chpState.text = Logic.v_Manga
+            chpName.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_tachiyomi)
+            chpState.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_reading)
+            numType.value = 0
+        }
+        else {
+            chpName.text = Logic.v_TachiyomiSy
+            chpState.text = Logic.v_Manga
+            chpName.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_tachiyomi)
+            chpState.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_reading)
+            numType.value = 0
+        }
+    }
+
+    /**
+     * Set the correct chpName, chpState and chipIcon when the chpState is changed
+     * @param activity The activity that calls this function
+     */
+    private fun stateWasChanged(activity: Activity) {
+        if (chpState.getText().toString() == Logic.v_Manga) {
+            chpState.text = Logic.v_Manhwa
+        } else if (chpState.getText().toString() == Logic.v_Manhwa) {
+            chpState.text = Logic.v_Manga
+        }
+        else if (chpState.getText().toString() == Logic.v_LightNovel) {
+            chpName.text = Logic.v_LightNovel
+            chpState.text = Logic.v_MoonReader
+            chpName.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_reading_ln)
+            chpState.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_moon_reader)
+        } else if (chpState.getText().toString() == Logic.v_MoonReader) {
+            chpName.text = Logic.v_MoonReader
+            chpState.text = Logic.v_LightNovel
+            chpName.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_moon_reader)
+            chpState.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_reading_ln)
+        }
+        else if (chpState.getText().toString() == Logic.v_Aniyomi) {
+            chpName.text = Logic.v_Aniyomi
+            chpState.text = Logic.v_Anime
+            chpName.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_aniyomi)
+            chpState.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_watching)
+        } else if (chpState.getText().toString() == Logic.v_Anime) {
+            chpName.text = Logic.v_Anime
+            chpState.text = Logic.v_Aniyomi
+            chpName.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_watching)
+            chpState.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_aniyomi)
+        }
+    }
+    
+    /**
+     * restore all details from sharedPrefs
+     * @param
+     */
+    private fun restoreFromLastState() {
+        // set the saved edtDetails from sharedPrefs
+        when (chpName.text) {
+            Logic.v_TachiyomiSy -> edtDetails.setText(sharedPreferences.getString("keyDetails_tachi", ""))
+            Logic.v_LightNovel, Logic.v_MoonReader -> edtDetails.setText(sharedPreferences.getString("keyDetails_ln", ""))
+            Logic.v_Aniyomi, Logic.v_Anime -> edtDetails.setText(sharedPreferences.getString("keyDetails_anime", ""))
+            Logic.v_Mangago -> edtDetails.setText(sharedPreferences.getString("keyDetails_mangago", ""))
+            Logic.v_Webtoon -> edtDetails.setText(sharedPreferences.getString("keyDetails_webtoon", ""))
+        }
     }
 }
