@@ -54,4 +54,5 @@
     <string name="notification_description">Notification displayed when rich presence is active</string>
     <string name="permission_needed">Permission Needed</string>
     <string name="notification_permission_is_needed">Notification permission is needed to show notification from Android 13 onwards!\nPress \'Allow\' in the next dialog.</string>
+    <string name="day_or_night_theme" translatable="false">Day/Night Theme</string>
 </resources>

@@ -17,4 +17,12 @@
         android:titleCondensed="Account"
         android:tooltipText="Switch Account"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/themeSwitch"
+        android:icon="@android:drawable/ic_menu_compass"
+        android:onClick="themeSwitch"
+        android:title="@string/day_or_night_theme"
+        android:titleCondensed="Theme"
+        android:tooltipText="Switch Theme"
+        app:showAsAction="never" />
 </menu>
