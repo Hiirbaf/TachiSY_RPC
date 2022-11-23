@@ -100,6 +100,7 @@ class MyService : Service() {
             if (!NotificationUtils.areNotificationsEnabled()) {
                 val permission = "android.permission.POST_NOTIFICATIONS"
                 val activity = MainActivity.Main_Activity
+                // Check whether the permission rationale is required
                 if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)) {
                     AlertDialog.Builder(activity)
                         .setTitle(getString(R.string.permission_needed))
