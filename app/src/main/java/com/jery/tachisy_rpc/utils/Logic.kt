@@ -5,7 +5,6 @@ package com.jery.tachisy_rpc.utils
 import android.app.Activity
 import androidx.appcompat.content.res.AppCompatResources
 import com.jery.tachisy_rpc.MainActivity
-import com.jery.tachisy_rpc.MyService
 import com.jery.tachisy_rpc.R
 
 object Logic {
@@ -15,8 +14,8 @@ object Logic {
     // setup preset names
     val v_TachiyomiSy = Preset_Names[0]
     val v_LightNovel = Preset_Names[1]
-    val v_Mangago = Preset_Names[2]
-    val v_Anime = Preset_Names[3]
+    val v_Anime = Preset_Names[2]
+    val v_Mangago = Preset_Names[3]
     val v_Webtoon = Preset_Names[4]
     // setup preset states
     val v_Manga = Preset_States[0]
@@ -79,34 +78,5 @@ object Logic {
         // save the current type and ch to sharedPrefs
         MainActivity.prefsEditor.putInt("keyType", MainActivity.numType.getValue()).commit()
         MainActivity.prefsEditor.putInt("keyCh", MainActivity.numChapter.getValue()).commit()
-    }
-
-    /**
-     * Set the largeImage and smallImage urls that are passed are passed on to the rich presence
-     * @param activity The activity that calls this function
-     */
-    fun loadRPCData(activity: MyService) {
-        when {
-            chpName.getText().toString() == v_TachiyomiSy -> {
-                largeImage = "attachments/961577469427736636/971135180322529310/unknown.png"
-                smallImage = "attachments/949382602073210921/1001372717783711814/reading-icon.png"
-            }
-            chpName.getText().toString() == v_LightNovel || chpName.text == v_MoonReader -> {
-                largeImage = "attachments/949382602073210921/1031952390636707930/moon-reader-pro.png"
-                smallImage = "attachments/949382602073210921/994460304626962484/Reading-Icon.png"
-            }
-            chpName.getText().toString() == v_Aniyomi || chpName.getText().toString() == v_Anime -> {
-                largeImage = "attachments/949382602073210921/1002240570091122798/Aniyomi.png"
-                smallImage = "attachments/949382602073210921/1002240620569567404/watching-icon.png"
-            }
-            chpName.getText().toString() == v_Mangago -> {
-                largeImage = "attachments/949382602073210921/1034172617311133847/mangago.jpg"
-                smallImage = "attachments/949382602073210921/1001372717783711814/reading-icon.png"
-            }
-            chpName.getText().toString() == v_Webtoon -> {
-                largeImage = "attachments/1035528103017066618/1035529154600382515/Webtoon.png"
-                smallImage = "attachments/949382602073210921/1001372717783711814/reading-icon.png"
-            }
-        }
     }
 }

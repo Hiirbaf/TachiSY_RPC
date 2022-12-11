@@ -250,47 +250,49 @@ class MainActivity : AppCompatActivity() {
      * @param activity The activity that calls this function
      */
     private fun nameWasChanged(activity: Activity = this) {
-        if (chpName.getText().toString() == Logic.v_TachiyomiSy) {
-            chpName.text = Logic.v_LightNovel
-            chpState.text = Logic.v_MoonReader
-            chpName.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_reading_ln)
-            chpState.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_moon_reader)
-            numType.value = 0
-        }
-        else if ((chpName.getText().toString() == Logic.v_LightNovel) || (chpName.getText().toString() == Logic.v_MoonReader)) {
-            chpName.text = Logic.v_Aniyomi
-            chpState.text = Logic.v_Anime
-            chpName.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_aniyomi)
-            chpState.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_watching)
-            numType.value = 2
-        }
-        else if ((chpName.getText().toString() == Logic.v_Aniyomi) || (chpName.getText().toString() == Logic.v_Anime)) {
-            chpName.text = Logic.v_Mangago
-            chpState.text = Logic.v_Manga
-            chpName.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_mangago)
-            chpState.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_reading)
-            numType.value = 0
-        }
-        else if (chpName.getText().toString() == Logic.v_Mangago) {
-            chpName.text = Logic.v_Webtoon
-            chpState.text = Logic.v_Reading
-            chpName.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_webtoon)
-            chpState.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_reading)
-            numType.value = 2
-        }
-        else if (chpName.getText().toString() == Logic.v_Webtoon) {
-            chpName.text = Logic.v_TachiyomiSy
-            chpState.text = Logic.v_Manga
-            chpName.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_tachiyomi)
-            chpState.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_reading)
-            numType.value = 0
-        }
-        else {
-            chpName.text = Logic.v_TachiyomiSy
-            chpState.text = Logic.v_Manga
-            chpName.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_tachiyomi)
-            chpState.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_reading)
-            numType.value = 0
+        when {
+            chpName.getText().toString() == Logic.v_TachiyomiSy -> {
+                chpName.text = Logic.v_LightNovel
+                chpState.text = Logic.v_MoonReader
+                chpName.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_reading_ln)
+                chpState.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_moon_reader)
+                numType.value = 0
+            }
+            chpName.getText().toString() == Logic.v_LightNovel || chpName.getText().toString() == Logic.v_MoonReader -> {
+                chpName.text = Logic.v_Aniyomi
+                chpState.text = Logic.v_Anime
+                chpName.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_aniyomi)
+                chpState.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_watching)
+                numType.value = 2
+            }
+            chpName.getText().toString() == Logic.v_Aniyomi || chpName.getText().toString() == Logic.v_Anime -> {
+                chpName.text = Logic.v_Mangago
+                chpState.text = Logic.v_Manga
+                chpName.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_mangago)
+                chpState.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_reading)
+                numType.value = 0
+            }
+            chpName.getText().toString() == Logic.v_Mangago -> {
+                chpName.text = Logic.v_Webtoon
+                chpState.text = Logic.v_Reading
+                chpName.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_webtoon)
+                chpState.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_reading)
+                numType.value = 2
+            }
+            chpName.getText().toString() == Logic.v_Webtoon -> {
+                chpName.text = Logic.v_TachiyomiSy
+                chpState.text = Logic.v_Manga
+                chpName.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_tachiyomi)
+                chpState.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_reading)
+                numType.value = 0
+            }
+            else -> {
+                chpName.text = Logic.v_TachiyomiSy
+                chpState.text = Logic.v_Manga
+                chpName.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_tachiyomi)
+                chpState.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_reading)
+                numType.value = 0
+            }
         }
     }
 
@@ -299,32 +301,37 @@ class MainActivity : AppCompatActivity() {
      * @param activity The activity that calls this function
      */
     private fun stateWasChanged(activity: Activity) {
-        if (chpState.getText().toString() == Logic.v_Manga) {
-            chpState.text = Logic.v_Manhwa
-        } else if (chpState.getText().toString() == Logic.v_Manhwa) {
-            chpState.text = Logic.v_Manga
-        }
-        else if (chpState.getText().toString() == Logic.v_LightNovel) {
-            chpName.text = Logic.v_LightNovel
-            chpState.text = Logic.v_MoonReader
-            chpName.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_reading_ln)
-            chpState.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_moon_reader)
-        } else if (chpState.getText().toString() == Logic.v_MoonReader) {
-            chpName.text = Logic.v_MoonReader
-            chpState.text = Logic.v_LightNovel
-            chpName.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_moon_reader)
-            chpState.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_reading_ln)
-        }
-        else if (chpState.getText().toString() == Logic.v_Aniyomi) {
-            chpName.text = Logic.v_Aniyomi
-            chpState.text = Logic.v_Anime
-            chpName.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_aniyomi)
-            chpState.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_watching)
-        } else if (chpState.getText().toString() == Logic.v_Anime) {
-            chpName.text = Logic.v_Anime
-            chpState.text = Logic.v_Aniyomi
-            chpName.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_watching)
-            chpState.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_aniyomi)
+        when {
+            chpState.getText().toString() == Logic.v_Manga -> {
+                chpState.text = Logic.v_Manhwa
+            }
+            chpState.getText().toString() == Logic.v_Manhwa -> {
+                chpState.text = Logic.v_Manga
+            }
+            chpState.getText().toString() == Logic.v_LightNovel -> {
+                chpName.text = Logic.v_LightNovel
+                chpState.text = Logic.v_MoonReader
+                chpName.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_reading_ln)
+                chpState.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_moon_reader)
+            }
+            chpState.getText().toString() == Logic.v_MoonReader -> {
+                chpName.text = Logic.v_MoonReader
+                chpState.text = Logic.v_LightNovel
+                chpName.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_moon_reader)
+                chpState.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_reading_ln)
+            }
+            chpState.getText().toString() == Logic.v_Aniyomi -> {
+                chpName.text = Logic.v_Aniyomi
+                chpState.text = Logic.v_Anime
+                chpName.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_aniyomi)
+                chpState.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_watching)
+            }
+            chpState.getText().toString() == Logic.v_Anime -> {
+                chpName.text = Logic.v_Anime
+                chpState.text = Logic.v_Aniyomi
+                chpName.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_watching)
+                chpState.chipIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_aniyomi)
+            }
         }
     }
     

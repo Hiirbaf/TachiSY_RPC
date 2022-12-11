@@ -3,6 +3,7 @@ package com.jery.tachisy_rpc
 import android.app.*
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.IBinder
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
@@ -80,7 +81,7 @@ class MyService : Service() {
         // When the service starts (And no button is pressed in notification (obviously))
         else {
             // setup vars that will be used by the rich presence service
-            Logic.loadRPCData(this)
+            loadRPCData(this)
             Logic.saveToLastState()
 
             var chapterType = " $chType "   // surround chType with spaces
@@ -143,20 +144,24 @@ class MyService : Service() {
                     notiBtnTwoText = getString(R.string.Restart)
                 }
 
-                @Suppress("DEPRECATION")
-                startForeground(
-                    99961,
-                    Notification.Builder(context, CHANNEL_ID)
-                        .setSmallIcon(R.drawable.ic_rpc_placeholder)
-                        .setContentTitle(MainActivity.chpName.text)
-                        .setContentText("「$activityDetails」")
-                        .setSubText(MainActivity.chpState.text)
-                        .setUsesChronometer(true)
-                        .addAction(R.drawable.ic_rpc_placeholder, getString(R.string.Exit), PendingIntent.getService(this, 0, stopIntent, PendingIntent.FLAG_IMMUTABLE))
-                        .addAction(R.drawable.ic_rpc_placeholder, notiBtnOneText, PendingIntent.getService(this, 0, notiBtnOneIntent, PendingIntent.FLAG_IMMUTABLE))
-                        .addAction(R.drawable.ic_rpc_placeholder, notiBtnTwoText, PendingIntent.getService(this, 0, notiBtnTwoIntent, PendingIntent.FLAG_IMMUTABLE))
-                        .build()
-                )
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    @Suppress("DEPRECATION")
+                    startForeground(
+                        99961,
+                        Notification.Builder(context, CHANNEL_ID)
+                            .setSmallIcon(R.drawable.ic_rpc_placeholder)
+                            .setContentTitle(MainActivity.chpName.text)
+                            .setContentText("「$activityDetails」")
+                            .setSubText(MainActivity.chpState.text)
+                            .setUsesChronometer(true)
+                            .addAction(R.drawable.ic_rpc_placeholder, getString(R.string.Exit), PendingIntent.getService(this, 0, stopIntent, PendingIntent.FLAG_IMMUTABLE))
+                            .addAction(R.drawable.ic_rpc_placeholder, notiBtnOneText, PendingIntent.getService(this, 0, notiBtnOneIntent, PendingIntent.FLAG_IMMUTABLE))
+                            .addAction(R.drawable.ic_rpc_placeholder, notiBtnTwoText, PendingIntent.getService(this, 0, notiBtnTwoIntent, PendingIntent.FLAG_IMMUTABLE))
+                            .setOngoing(true)
+                            .setFlag(Notification.FLAG_NO_CLEAR,true)
+                            .build()
+                    )
+                }
             }
 
             // Setup Rich Presence
@@ -194,5 +199,34 @@ class MyService : Service() {
 
     override fun onBind(intent: Intent): IBinder {
         TODO("Return the communication channel to the service.")
+    }
+
+    /**
+     * Set the largeImage and smallImage urls that are passed are passed on to the rich presence
+     * @param activity The activity that calls this function
+     */
+    fun loadRPCData(activity: MyService) {
+        when {
+            MainActivity.chpName.getText().toString() == Logic.v_TachiyomiSy -> {
+                Logic.largeImage = "attachments/961577469427736636/971135180322529310/unknown.png"
+                Logic.smallImage = "attachments/949382602073210921/1001372717783711814/reading-icon.png"
+            }
+            MainActivity.chpName.getText().toString() == Logic.v_LightNovel || MainActivity.chpName.getText().toString() == Logic.v_MoonReader -> {
+                Logic.largeImage = "attachments/949382602073210921/1031952390636707930/moon-reader-pro.png"
+                Logic.smallImage = "attachments/949382602073210921/994460304626962484/Reading-Icon.png"
+            }
+            MainActivity.chpName.getText().toString() == Logic.v_Aniyomi || MainActivity.chpName.getText().toString() == Logic.v_Anime -> {
+                Logic.largeImage = "attachments/949382602073210921/1002240570091122798/Aniyomi.png"
+                Logic.smallImage = "attachments/949382602073210921/1002240620569567404/watching-icon.png"
+            }
+            MainActivity.chpName.getText().toString() == Logic.v_Mangago -> {
+                Logic.largeImage = "attachments/949382602073210921/1034172617311133847/mangago.jpg"
+                Logic.smallImage = "attachments/949382602073210921/1001372717783711814/reading-icon.png"
+            }
+            MainActivity.chpName.getText().toString() == Logic.v_Webtoon -> {
+                Logic.largeImage = "attachments/1035528103017066618/1035529154600382515/Webtoon.png"
+                Logic.smallImage = "attachments/949382602073210921/1001372717783711814/reading-icon.png"
+            }
+        }
     }
 }
