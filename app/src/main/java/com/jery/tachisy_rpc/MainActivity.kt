@@ -144,9 +144,10 @@ class MainActivity : AppCompatActivity() {
             }
             else if (Token.matches(Regex("^.+$")))   // need to change this lol
             {
-                if (swtSwitch.isChecked())
+                if (swtSwitch.isChecked()) {
+                    prefsEditor.putLong("keyStartTimestamp", System.currentTimeMillis()).commit()
                     startService(Intent(this, MyService::class.java))
-                else
+                } else
                     stopService(Intent(this, MyService::class.java))
             } else {
                 Toast.makeText(this,getString(R.string.Recheck_token_for_typos) , Toast.LENGTH_SHORT).show()
@@ -348,5 +349,13 @@ class MainActivity : AppCompatActivity() {
             Logic.v_Mangago -> edtDetails.setText(sharedPreferences.getString("keyDetails_mangago", ""))
             Logic.v_Webtoon -> edtDetails.setText(sharedPreferences.getString("keyDetails_webtoon", ""))
         }
+    }
+
+    fun persistentTimestamp(item: MenuItem) {
+        if (sharedPreferences.getBoolean("keyPersistentTimestamp", false))  //true
+            prefsEditor.putBoolean("keyPersistentTimestamp", false).commit()
+        else    //false
+            prefsEditor.putBoolean("keyPersistentTimestamp", true).commit()
+        Toast.makeText(this, "Persistent Timestamp: ${sharedPreferences.getBoolean("keyPersistentTimestamp", false)}", Toast.LENGTH_SHORT).show()
     }
 }
