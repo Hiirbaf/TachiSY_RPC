@@ -1,3 +1,5 @@
+@file:Suppress("SimplifyBooleanWithConstants")
+
 package com.jery.tachisy_rpc
 
 import android.app.*
@@ -8,6 +10,7 @@ import android.os.IBinder
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import com.blankj.utilcode.util.NotificationUtils
+import com.jery.tachisy_rpc.MainActivity.Companion.sharedPreferences
 import com.jery.tachisy_rpc.rpc.RPCService
 import com.jery.tachisy_rpc.utils.Logic
 
@@ -34,6 +37,7 @@ class MyService : Service() {
     private var token = MainActivity.Token
     private var type = 0
     private var chType = MainActivity.arrayOfTypes[MainActivity.numType.value]
+    var startTimestamp: Long = sharedPreferences.getLong("keyStartTimestamp", System.currentTimeMillis())
 
     private var context: Context? = this
     private var restartService: Boolean? = false
@@ -144,6 +148,12 @@ class MyService : Service() {
                     notiBtnTwoText = getString(R.string.Restart)
                 }
 
+                // set startTimestamp based on persistentTimestamp preference
+                startTimestamp = if (sharedPreferences.getBoolean("keyPersistentTimestamp", false))
+                    sharedPreferences.getLong("keyStartTimestamp", System.currentTimeMillis())
+                else
+                    System.currentTimeMillis()
+
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                     @Suppress("DEPRECATION")
                     startForeground(
@@ -154,6 +164,7 @@ class MyService : Service() {
                             .setContentText("「$activityDetails」")
                             .setSubText(MainActivity.chpState.text)
                             .setUsesChronometer(true)
+                            .setWhen(startTimestamp)
                             .addAction(R.drawable.ic_rpc_placeholder, getString(R.string.Exit), PendingIntent.getService(this, 0, stopIntent, PendingIntent.FLAG_IMMUTABLE))
                             .addAction(R.drawable.ic_rpc_placeholder, notiBtnOneText, PendingIntent.getService(this, 0, notiBtnOneIntent, PendingIntent.FLAG_IMMUTABLE))
                             .addAction(R.drawable.ic_rpc_placeholder, notiBtnTwoText, PendingIntent.getService(this, 0, notiBtnTwoIntent, PendingIntent.FLAG_IMMUTABLE))
@@ -171,7 +182,7 @@ class MyService : Service() {
                 .setLargeImage(Logic.largeImage)
                 .setSmallImage(Logic.smallImage)
                 .setType(type)
-                .setStartTimestamps(System.currentTimeMillis())
+                .setStartTimestamps(startTimestamp)
                 .setStatus("online")
                 .build()
 

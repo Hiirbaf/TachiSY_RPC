@@ -25,4 +25,12 @@
         android:titleCondensed="Theme"
         android:tooltipText="Switch Theme"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/persistentTimestamp"
+        android:icon="@android:drawable/ic_menu_recent_history"
+        android:onClick="persistentTimestamp"
+        android:title="Persistent Timestamp"
+        android:titleCondensed="timestamp"
+        android:tooltipText="Persistent Timestamp"
+        app:showAsAction="never" />
 </menu>

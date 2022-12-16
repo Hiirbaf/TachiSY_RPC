@@ -12,8 +12,8 @@ android {
         applicationId "com.jery.tachisy_rpc"
         minSdk 28
         targetSdk 33
-        versionCode 12
-        versionName "1.1.10-alpha"
+        versionCode 13
+        versionName "1.1.11-alpha"
     }
 
     buildTypes {
